@@ -34,4 +34,8 @@ export class HttpService {
       body
     );
   }
+
+  login(body: any) {
+    return this.http.post(`${this.baseUrl}auth/login`, body);
+  }
 }

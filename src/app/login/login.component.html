@@ -1,0 +1,42 @@
+<main class="main">
+  <img src="../../assets/happyface.png" alt="" />
+
+  <h1 class="title-login">Login</h1>
+  <span class="forgot">Don't have an account? </span>
+  <span (click)="onRegisterClick()" class="sign-up">Register </span>
+
+  <div [formGroup]="loginForm" class="input-container">
+    <div class="input-wrapper">
+      <img class="icon" src="../../assets/envelope.png" alt="" />
+      <input
+        formControlName="email"
+        placeholder="Email"
+        class="row input"
+        type="text"
+      />
+    </div>
+
+    <div class="input-wrapper password-wrapper">
+      <img class="password-img icon" src="../../assets/password.png" alt="" />
+      <input
+        #passwordInput
+        formControlName="password"
+        placeholder="Password"
+        class="row input password"
+        type="password"
+      />
+
+      <img
+        class="eye"
+        [src]="eyeIconSrc"
+        (click)="togglePasswordVisibility()"
+        alt=""
+      />
+    </div>
+    <span (click)="onForgotPwClick()" class="forgot"
+      >Forgot your password?</span
+    >
+  </div>
+
+  <button (click)="onLoginClick()" class="login-btn">Login</button>
+</main>
