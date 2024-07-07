@@ -1,6 +1,8 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpService } from '../services/http.service';
+import { UtilsService } from '../services/utils.service';
 
 @Component({
   selector: 'app-chat',
@@ -9,7 +11,22 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
-export class ChatComponent {
+export class ChatComponent implements OnInit {
+  inputs: string[] = [];
+  todayDate: Date = new Date();
+  newMessage: string = '';
+  httpService = inject(HttpService);
+  utilsService = inject(UtilsService);
+
+  ngOnInit(): void {
+    const todayDate = this.utilsService.formatDateToStartOfDayUTC(
+      this.todayDate
+    );
+    this.httpService.getDayChat(todayDate).subscribe((response) => {
+      console.log(response);
+    });
+  }
+
   autoGrow(event: Event) {
     const textarea = event.target as HTMLTextAreaElement;
     textarea.style.height = 'auto';
@@ -23,7 +40,7 @@ export class ChatComponent {
   messages: { text: string; type: 'received' | 'sent' }[] = [
     { text: "Hello! What's new today?", type: 'received' },
   ];
-  newMessage: string = '';
+
   sendMessage() {
     if (this.newMessage.trim() !== '') {
       this.messages.push({ text: this.newMessage, type: 'sent' });
