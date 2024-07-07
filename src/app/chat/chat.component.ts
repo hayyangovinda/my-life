@@ -17,13 +17,25 @@ export class ChatComponent implements OnInit {
   newMessage: string = '';
   httpService = inject(HttpService);
   utilsService = inject(UtilsService);
+  todayChat: any;
 
   ngOnInit(): void {
     const todayDate = this.utilsService.formatDateToStartOfDayUTC(
       this.todayDate
     );
-    this.httpService.getDayChat(todayDate).subscribe((response) => {
-      console.log(response);
+    this.httpService.getDayChat(todayDate).subscribe((response: any) => {
+      if (response.length) {
+        this.todayChat = response[0];
+      } else {
+        this.httpService
+          .createDayChat({
+            date: todayDate,
+            inputs: [],
+          })
+          .subscribe((response2: any) => {
+            this.todayChat = response2;
+          });
+      }
     });
   }
 

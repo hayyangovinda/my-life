@@ -1,0 +1,38 @@
+<main class="main">
+  <img src="../../assets/star-struck.png" alt="" />
+
+  <h1 class="title-login">Register</h1>
+  <span class="forgot">Already have an account? </span>
+  <span (click)="onLoginClick()" class="sign-up">Login </span>
+
+  <div [formGroup]="registerForm" class="input-container">
+    <div class="input-wrapper">
+      <img class="icon" src="../../assets/envelope.png" alt="" />
+      <input
+        formControlName="email"
+        placeholder="Email"
+        class="row input"
+        type="text"
+      />
+    </div>
+    <div class="input-wrapper password-wrapper">
+      <img class="password-img icon" src="../../assets/password.png" alt="" />
+      <input
+        #passwordInput
+        formControlName="password"
+        placeholder="Password"
+        class="row input password"
+        type="text"
+      />
+
+      <!-- <img
+        class="eye"
+        [src]="eyeIconSrc"
+        (click)="togglePasswordVisibility()"
+        alt=""
+      /> -->
+    </div>
+  </div>
+
+  <button (click)="onRegisterClick()" class="login-btn">Register</button>
+</main>
