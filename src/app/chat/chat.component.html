@@ -1,17 +1,38 @@
-<div class="chat-container">
-  <div class="chat-header">
-    <h1>ChatGPT</h1>
-  </div>
-  <div class="chat-body">
-    <div class="message received">
-      <p>Hello! How can I help you today?</p>
+<main>
+  <header>
+    <img src="../../assets/icons/menu.png" alt="" />
+    <h5>My Life</h5>
+  </header>
+  <div class="chat-body" id="chatBody">
+    <div
+      *ngFor="let message of messages"
+      class="message"
+      [class.received]="message.type === 'received'"
+      [class.sent]="message.type === 'sent'"
+    >
+      <div *ngIf="message.type === 'received'" class="received-container">
+        <img src="../../assets/icons/logo.png" alt="" />
+        <p class="received">
+          {{ message.text }}
+        </p>
+      </div>
+      <p *ngIf="message.type === 'sent'" class="sent">
+        {{ message.text }}
+      </p>
     </div>
-    <div class="message sent">
-      <p>Hi, I need some assistance with my project.</p>
-    </div>
   </div>
-  <div class="chat-footer">
-    <input type="text" placeholder="Type a message" />
-    <button>Send</button>
-  </div>
-</div>
+  <footer>
+    <img class="camera" src="assets/icons/camera.png" alt="" />
+    <textarea
+      [(ngModel)]="newMessage"
+      (input)="autoGrow($event)"
+      placeholder="Type a message"
+    ></textarea>
+    <img
+      (click)="sendMessage()"
+      class="send"
+      src="assets/icons/arrow.png"
+      alt=""
+    />
+  </footer>
+</main>
