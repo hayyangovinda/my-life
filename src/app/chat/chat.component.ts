@@ -26,10 +26,8 @@ export class ChatComponent {
   newMessage: string = '';
   sendMessage() {
     if (this.newMessage.trim() !== '') {
-      // Add user's message
       this.messages.push({ text: this.newMessage, type: 'sent' });
 
-      // Array of possible responses
       const responses = [
         'Got it!',
         'Understood!',
@@ -39,17 +37,13 @@ export class ChatComponent {
         'Gotcha!',
       ];
 
-      // Select a random response
       const randomIndex = Math.floor(Math.random() * responses.length);
       const randomResponse = responses[randomIndex];
 
-      // Auto reply with the random response
       this.messages.push({ text: randomResponse, type: 'received' });
 
-      // Clear the input field after sending
       this.newMessage = '';
 
-      // Scroll to the bottom of the chat
       this.scrollChatToBottom();
     }
   }
@@ -61,7 +55,6 @@ export class ChatComponent {
     }
   }
 
-  // Scrolls chat to bottom after new message is added
   private scrollChatToBottom() {
     setTimeout(() => {
       const chatBody = document.getElementById('chatBody');
