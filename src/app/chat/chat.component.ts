@@ -26,6 +26,7 @@ export class ChatComponent implements OnInit {
     this.httpService.getDayChat(todayDate).subscribe((response: any) => {
       if (response.length) {
         this.todayChat = response[0];
+        this.messages = this.todayChat.inputs;
       } else {
         this.httpService
           .createDayChat({
@@ -71,6 +72,11 @@ export class ChatComponent implements OnInit {
 
       this.messages.push({ text: randomResponse, type: 'received' });
 
+      this.todayChat.inputs = this.newMessage;
+
+      this.httpService.updateDayChat(this.todayChat.id, {
+        inputs: this.todayChat.inputs,
+      });
       this.newMessage = '';
 
       this.scrollChatToBottom();

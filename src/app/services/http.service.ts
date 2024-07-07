@@ -16,6 +16,10 @@ export class HttpService {
     return this.http.post(`${this.baseUrl}day-chat`, body);
   }
 
+  updateDayChat(id: string, body: any) {
+    return this.http.patch(`${this.baseUrl}day-chat/${id}`, body);
+  }
+
   register(body: any) {
     return this.http.post(`${this.baseUrl}auth/register`, body);
   }
