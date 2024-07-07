@@ -1,0 +1,1 @@
+import{N as s,j as i}from"./chunk-ROZATKAH.js";var n=(()=>{let t=class t{constructor(){this.userEmail=new i(""),this.userEmail$=this.userEmail.asObservable()}updateUserEmail(r){this.userEmail.next(r)}};t.\u0275fac=function(a){return new(a||t)},t.\u0275prov=s({token:t,factory:t.\u0275fac,providedIn:"root"});let e=t;return e})();export{n as a};
