@@ -1,7 +1,7 @@
 <main>
   <header>
     <div class="header-container">
-      <img src="../../assets/icons/menu.png" alt="" />
+      <img src="../../assets/icons/menu.svg" alt="" />
       <h5>My Life</h5>
     </div>
   </header>
@@ -13,7 +13,7 @@
       [class.sent]="message.type === 'sent'"
     >
       <div *ngIf="message.type === 'received'" class="received-container">
-        <img src="../../assets/icons/logo.png" alt="" />
+        <img src="../../assets/icons/logo.svg" alt="" />
         <p class="received">
           {{ message.text }}
         </p>
@@ -24,7 +24,7 @@
     </div>
   </div>
   <footer>
-    <img class="camera" src="assets/icons/camera.png" alt="" />
+    <img class="camera" src="assets/icons/camera.svg" alt="" />
     <textarea
       [(ngModel)]="newMessage"
       (input)="autoGrow($event)"
@@ -33,7 +33,7 @@
     <img
       (click)="sendMessage()"
       class="send"
-      src="assets/icons/arrow.png"
+      src="assets/icons/arrow.svg"
       alt=""
     />
   </footer>
