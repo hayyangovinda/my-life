@@ -1,3 +1,14 @@
 .story-body {
   color: black;
+  padding: 35px;
+  line-height: 30px;
+}
+.main.story {
+  overflow-y: auto;
+}
+
+.header-story {
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
