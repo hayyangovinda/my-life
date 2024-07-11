@@ -27,10 +27,8 @@ export class LoginComponent {
     email: new FormControl(''),
     password: new FormControl(''),
   });
+  passwordShowIcon = false;
 
-  eyeIconOffSrc = '../../assets/eye_off.png';
-  eyeIconOnSrc = '../../assets/eye_on.png';
-  eyeIconSrc = this.eyeIconOffSrc;
   ngOnInit(): void {}
 
   private decodeToken(token: string) {
@@ -59,10 +57,10 @@ export class LoginComponent {
   togglePasswordVisibility() {
     if (this.passwordInput.nativeElement.type === 'password') {
       this.passwordInput.nativeElement.type = 'text';
-      this.eyeIconSrc = this.eyeIconOnSrc;
+      this.passwordShowIcon = true;
     } else {
       this.passwordInput.nativeElement.type = 'password';
-      this.eyeIconSrc = this.eyeIconOffSrc;
+      this.passwordShowIcon = false;
     }
   }
 }

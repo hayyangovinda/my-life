@@ -47,13 +47,9 @@ img {
   svg.password-img {
     width: 22px;
     height: 22px;
-    top: 36%;
+    top: 42%;
     left: 31px;
   }
-}
-
-.password {
-  margin-bottom: 7px;
 }
 
 .forgot,
@@ -147,4 +143,8 @@ h4.title {
     margin-left: 25px;
     margin-right: 35px;
   }
+}
+
+.password {
+  margin-bottom: 7px !important;
 }
