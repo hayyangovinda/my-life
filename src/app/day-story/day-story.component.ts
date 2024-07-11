@@ -1,11 +1,12 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { SharingService } from '../services/sharing.service';
 import { HttpService } from '../services/http.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-day-story',
   standalone: true,
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './day-story.component.html',
   styleUrls: ['../chat/chat.component.css', './day-story.component.css'],
 })
@@ -14,6 +15,8 @@ export class DayStoryComponent implements OnInit {
   generatedStory: string = '';
   dayPrompts: any;
   httpService = inject(HttpService);
+  date: any;
+  dayChatId: any;
 
   promptToSend =
     'rewrite the following as an entry in a diary/journal in a proper tone,  write it in the first person,u can use emojis, write good easy simple english.give me only the story,no title no date, no other details \n\n';
@@ -24,6 +27,8 @@ export class DayStoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.sharingService.dayToGenerate$.subscribe((dayChat: any) => {
+      this.date = dayChat.date;
+      this.dayChatId = dayChat._id;
       this.dayPrompts = dayChat.inputs;
       this.dayPrompts = this.dayPrompts
         .filter((prompt: any) => prompt.type === 'sent')
@@ -33,11 +38,22 @@ export class DayStoryComponent implements OnInit {
       this.promptToSend = this.promptToSend + this.dayPrompts;
       console.log(this.promptToSend);
 
+      if (dayChat.story) {
+        this.generatedStory = dayChat.story;
+        return;
+      }
       this.httpService
         .generateStory({ prompt: this.promptToSend })
         .subscribe((response: any) => {
           console.log(response);
           this.generatedStory = response.generatedText;
+          this.httpService
+            .updateDayChat(this.dayChatId, {
+              story: this.generatedStory,
+            })
+            .subscribe((response: any) => {
+              console.log(response);
+            });
         });
     });
   }

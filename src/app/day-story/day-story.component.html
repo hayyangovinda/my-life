@@ -5,7 +5,13 @@
       <h5>My Life</h5>
     </div>
   </header>
+  <h4>{{ date | date : "EEEE, dd MMMM yyyy" }}</h4>
   <div class="story-body">
     {{ generatedStory }}
   </div>
+
+  <footer>
+    <button>Regenerate</button>
+    <button>Save</button>
+  </footer>
 </main>
