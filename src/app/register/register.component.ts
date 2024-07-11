@@ -1,4 +1,10 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  ElementRef,
+  inject,
+  ViewChild,
+} from '@angular/core';
 import { HttpService } from '../services/http.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SharingService } from '../services/sharing.service';
@@ -13,6 +19,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
+  @ViewChild('passwordInput') passwordInput!: ElementRef<HTMLInputElement>;
+
   eyeIconSrc: any;
   httpService = inject(HttpService);
   destroyRef = inject(DestroyRef);
@@ -23,6 +31,7 @@ export class RegisterComponent {
     email: new FormControl(''),
     password: new FormControl(''),
   });
+  passwordShowIcon = false;
 
   onLoginClick() {
     throw new Error('Method not implemented.');
@@ -49,5 +58,15 @@ export class RegisterComponent {
 
         this.router.navigateByUrl('check-email');
       });
+  }
+
+  togglePasswordVisibility() {
+    if (this.passwordInput.nativeElement.type === 'password') {
+      this.passwordInput.nativeElement.type = 'text';
+      this.passwordShowIcon = true;
+    } else {
+      this.passwordInput.nativeElement.type = 'password';
+      this.passwordShowIcon = false;
+    }
   }
 }
