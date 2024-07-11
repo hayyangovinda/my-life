@@ -53,6 +53,8 @@
 
 :host ::ng-deep .mat-datepicker-toggle-default-icon {
   fill: #55ad90;
+  width: 20px;
+  height: 20px;
 }
 
 :host ::ng-deep .mat-date-range-input-inner {
