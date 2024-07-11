@@ -22,4 +22,11 @@ export class SharingService {
   toggleSidenav() {
     this.toogleSidenav.next(!this.toogleSidenav.value);
   }
+
+  dayToGenerate = new BehaviorSubject(null);
+  dayToGenerate$ = this.dayToGenerate.asObservable();
+
+  updateDayToGenerate(day: any) {
+    this.dayToGenerate.next(day);
+  }
 }
