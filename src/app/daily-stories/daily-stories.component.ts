@@ -9,9 +9,13 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import {
+  MAT_DATE_LOCALE,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { startOfYear, endOfYear } from 'date-fns';
 
 @Component({
   selector: 'app-daily-stories',
@@ -26,18 +30,24 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
   templateUrl: './daily-stories.component.html',
   styleUrls: ['../chat/chat.component.css', './daily-stories.component.css'],
-  providers: [provideNativeDateAdapter()],
+  providers: [
+    provideNativeDateAdapter(),
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+  ],
 })
 export class DailyStoriesComponent {
   sharingService = inject(SharingService);
   httpService = inject(HttpService);
   stories!: any[];
   router = inject(Router);
-
+  currentYear = new Date();
+  firstDayOfYear = startOfYear(this.currentYear);
+  lastDayOfYear = endOfYear(this.currentYear);
   range = new FormGroup({
-    start: new FormControl<Date | null>(null),
-    end: new FormControl<Date | null>(null),
+    start: new FormControl<Date | null>(this.firstDayOfYear),
+    end: new FormControl<Date | null>(this.lastDayOfYear),
   });
+
   ngOnInit(): void {
     this.httpService.getAllDayChats().subscribe((response: any) => {
       console.log(response);
