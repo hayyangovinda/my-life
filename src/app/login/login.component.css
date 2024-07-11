@@ -15,10 +15,7 @@ img {
   width: 100%;
   color: hsl(15, 100%, 57%);
   box-sizing: border-box;
-}
-
-.input:focus {
-  outline: #ff5b22 solid 2px;
+  outline: none;
 }
 
 .input-container {
