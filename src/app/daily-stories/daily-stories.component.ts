@@ -5,8 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './daily-stories.component.html',
-  styleUrl: './daily-stories.component.css'
+  styleUrls: ['../chat/chat.component.css', './daily-stories.component.css'],
 })
-export class DailyStoriesComponent {
-
-}
+export class DailyStoriesComponent {}

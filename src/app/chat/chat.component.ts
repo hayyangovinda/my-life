@@ -1,13 +1,15 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpService } from '../services/http.service';
 import { UtilsService } from '../services/utils.service';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { SharingService } from '../services/sharing.service';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [NgFor, FormsModule, NgIf],
+  imports: [NgFor, FormsModule, NgIf, MatSidenavModule],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
@@ -17,6 +19,7 @@ export class ChatComponent implements OnInit {
   newMessage: string = '';
   httpService = inject(HttpService);
   utilsService = inject(UtilsService);
+  sharingService = inject(SharingService);
   todayChat: any;
 
   ngOnInit(): void {
@@ -102,5 +105,9 @@ export class ChatComponent implements OnInit {
         chatBody.scrollTop = chatBody.scrollHeight;
       }
     }, 0);
+  }
+
+  toggleSidenav() {
+    this.sharingService.toggleSidenav();
   }
 }

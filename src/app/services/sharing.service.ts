@@ -14,4 +14,12 @@ export class SharingService {
   updateUserEmail(email: string) {
     this.userEmail.next(email);
   }
+
+  toogleSidenav = new BehaviorSubject(true);
+
+  toogleSidenav$ = this.toogleSidenav.asObservable();
+
+  toggleSidenav() {
+    this.toogleSidenav.next(!this.toogleSidenav.value);
+  }
 }
