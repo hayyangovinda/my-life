@@ -28,6 +28,7 @@ export class DailyStoriesComponent {
   }
 
   goToStory(story: any) {
+    this.sharingService.updateDayToGenerate(story);
     this.router.navigateByUrl('story/' + story._id);
   }
 }
