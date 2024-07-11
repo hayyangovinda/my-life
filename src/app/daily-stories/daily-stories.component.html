@@ -6,5 +6,13 @@
     </div>
   </header>
 
-  <div class="">Daily Stories</div>
+  <div class="daily-stories-body">
+    @for (story of stories; track $index) {
+    <div class="daily-stories-item row">
+      <div class="img">📖</div>
+
+      {{ story.date | date : "EEEE, dd MMMM yyyy" }}
+    </div>
+    }
+  </div>
 </main>

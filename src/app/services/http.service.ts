@@ -20,6 +20,10 @@ export class HttpService {
     return this.http.patch(`${this.baseUrl}day-chat/${id}`, body);
   }
 
+  getAllDayChats() {
+    return this.http.get(`${this.baseUrl}day-chat`);
+  }
+
   register(body: any) {
     return this.http.post(`${this.baseUrl}auth/register`, body);
   }
