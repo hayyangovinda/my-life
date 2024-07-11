@@ -5,6 +5,9 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class SharingService {
+  goToStory(story: any) {
+    throw new Error('Method not implemented.');
+  }
   constructor() {}
 
   userEmail = new BehaviorSubject('');

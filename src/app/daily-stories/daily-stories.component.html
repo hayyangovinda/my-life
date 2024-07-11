@@ -8,7 +8,7 @@
 
   <div class="daily-stories-body">
     @for (story of stories; track $index) {
-    <div class="daily-stories-item row">
+    <div (click)="goToStory(story)" class="daily-stories-item row">
       <div class="img">📖</div>
 
       {{ story.date | date : "EEEE, dd MMMM yyyy" }}

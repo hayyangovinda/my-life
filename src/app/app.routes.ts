@@ -36,4 +36,12 @@ export const routes: Routes = [
         (m) => m.DailyStoriesComponent
       ),
   },
+
+  {
+    path: 'story/:storyId',
+    loadComponent: () =>
+      import('./day-story/day-story.component').then(
+        (m) => m.DayStoryComponent
+      ),
+  },
 ];
