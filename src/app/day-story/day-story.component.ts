@@ -1,5 +1,6 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { SharingService } from '../services/sharing.service';
+import { HttpService } from '../services/http.service';
 
 @Component({
   selector: 'app-day-story',
@@ -12,9 +13,10 @@ export class DayStoryComponent implements OnInit {
   sharingService = inject(SharingService);
   generatedStory: string = '';
   dayPrompts: any;
+  httpService = inject(HttpService);
 
   promptToSend =
-    'rewrite the following as an entry in a diary/journal  write it in the first person,u can use emojis, not too formal ,not too casual';
+    'rewrite the following as an entry in a diary/journal in a proper tone,  write it in the first person,u can use emojis, write good easy simple english.give me only the story,no title no date, no other details \n\n';
   toggleSidenav() {
     this.sharingService.toggleSidenav();
   }
@@ -27,9 +29,16 @@ export class DayStoryComponent implements OnInit {
         .filter((prompt: any) => prompt.type === 'sent')
         .map((prompt: any) => prompt.text)
         .join(',');
-      console.log(this.dayPrompts);
+
+      this.promptToSend = this.promptToSend + this.dayPrompts;
+      console.log(this.promptToSend);
+
+      this.httpService
+        .generateStory({ prompt: this.promptToSend })
+        .subscribe((response: any) => {
+          console.log(response);
+          this.generatedStory = response.generatedText;
+        });
     });
   }
-
-  getPromptFromStory(story: any) {}
 }

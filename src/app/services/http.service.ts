@@ -42,4 +42,8 @@ export class HttpService {
   login(body: any) {
     return this.http.post(`${this.baseUrl}auth/login`, body);
   }
+
+  generateStory(body: any) {
+    return this.http.post(`${this.baseUrl}ai`, body);
+  }
 }
