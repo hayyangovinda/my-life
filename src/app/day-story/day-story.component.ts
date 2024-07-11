@@ -36,7 +36,6 @@ export class DayStoryComponent implements OnInit {
         .join(',');
 
       this.promptToSend = this.promptToSend + this.dayPrompts;
-      console.log(this.promptToSend);
 
       if (dayChat.story) {
         this.generatedStory = dayChat.story;
@@ -45,15 +44,12 @@ export class DayStoryComponent implements OnInit {
       this.httpService
         .generateStory({ prompt: this.promptToSend })
         .subscribe((response: any) => {
-          console.log(response);
           this.generatedStory = response.generatedText;
           this.httpService
             .updateDayChat(this.dayChatId, {
               story: this.generatedStory,
             })
-            .subscribe((response: any) => {
-              console.log(response);
-            });
+            .subscribe((response: any) => {});
         });
     });
   }

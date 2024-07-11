@@ -7,6 +7,10 @@
   color: #000;
   background-color: whitesmoke;
 }
+.main-daily {
+  height: 100%;
+  background-color: whitesmoke;
+}
 
 .row {
   width: 100%;
@@ -27,4 +31,34 @@
     margin-left: 10px;
     font-size: 17px;
   }
+}
+.date-picker {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.inner-date-picker {
+  margin-top: 10px;
+  width: 250px;
+  border: 1px solid #55ad90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 15px;
+  height: 40px;
+  border-radius: 12px;
+  background-color: white;
+}
+
+:host ::ng-deep .mat-datepicker-toggle-default-icon {
+  fill: #55ad90;
+}
+
+:host ::ng-deep .mat-date-range-input-inner {
+  color: #4e4e4e;
+}
+
+header {
+  box-shadow: none;
 }
