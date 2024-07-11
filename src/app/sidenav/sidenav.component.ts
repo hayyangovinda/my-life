@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { SharingService } from '../services/sharing.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -8,10 +10,14 @@ import { Component } from '@angular/core';
   styleUrl: './sidenav.component.css',
 })
 export class SidenavComponent {
+  router = inject(Router);
+  sharingService = inject(SharingService);
   goToChat() {
-    throw new Error('Method not implemented.');
+    this.router.navigateByUrl('home');
+    this.sharingService.toggleSidenav();
   }
   goToDailyStories() {
-    throw new Error('Method not implemented.');
+    this.router.navigateByUrl('daily-stories');
+    this.sharingService.toggleSidenav();
   }
 }

@@ -15,7 +15,7 @@ export class SharingService {
     this.userEmail.next(email);
   }
 
-  toogleSidenav = new BehaviorSubject(true);
+  toogleSidenav = new BehaviorSubject(false);
 
   toogleSidenav$ = this.toogleSidenav.asObservable();
 

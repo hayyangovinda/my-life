@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { SharingService } from '../services/sharing.service';
 
 @Component({
   selector: 'app-daily-stories',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
   templateUrl: './daily-stories.component.html',
   styleUrls: ['../chat/chat.component.css', './daily-stories.component.css'],
 })
-export class DailyStoriesComponent {}
+export class DailyStoriesComponent {
+  sharingService = inject(SharingService);
+
+  toggleSidenav() {
+    this.sharingService.toggleSidenav();
+  }
+}
