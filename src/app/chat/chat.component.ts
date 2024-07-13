@@ -156,9 +156,12 @@ export class ChatComponent implements OnInit {
           const blob = new Blob(this.chunks, { type: 'audio/wav' });
           this.chunks = [];
           const audioUrl = URL.createObjectURL(blob);
+          console.log('audioUrl', audioUrl);
         };
       });
     }
+
+    this.canRecord = true;
   }
 
   toggleRecording() {
@@ -167,9 +170,11 @@ export class ChatComponent implements OnInit {
     }
     if (this.isRecording) {
       this.recorder?.stop();
+      console.log('recording stopped');
       this.isRecording = false;
     } else {
       this.recorder?.start();
+      console.log('recording started');
       this.isRecording = true;
     }
   }
