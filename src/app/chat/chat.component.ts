@@ -31,6 +31,10 @@ export class ChatComponent implements OnInit {
   todayChat: any;
   showDeleteIcon: boolean = false;
   deleteIconPosition: number | null = null;
+  canRecord: boolean = false;
+  isRecording: boolean = false;
+  recorder: MediaRecorder | null = null;
+  chunks: any = [];
   messages: { text: string; type: 'received' | 'sent' }[] = [
     { text: "Hello! What's new today?", type: 'received' },
   ];
@@ -39,6 +43,7 @@ export class ChatComponent implements OnInit {
     const todayDate = this.utilsService.formatDateToStartOfDayUTC(
       this.todayDate
     );
+    this.setUpAudio();
     this.httpService.getDayChat(todayDate).subscribe((response: any) => {
       if (response.length) {
         this.todayChat = response[0];
@@ -137,5 +142,35 @@ export class ChatComponent implements OnInit {
     this.deleteIconPosition = null;
 
     this.messages.splice(i, 2);
+  }
+
+  setUpAudio() {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+        this.recorder = new MediaRecorder(stream);
+        this.recorder.ondataavailable = (e) => {
+          this.chunks.push(e.data);
+        };
+
+        this.recorder.onstop = () => {
+          const blob = new Blob(this.chunks, { type: 'audio/wav' });
+          this.chunks = [];
+          const audioUrl = URL.createObjectURL(blob);
+        };
+      });
+    }
+  }
+
+  toggleRecording() {
+    if (!this.canRecord) {
+      return;
+    }
+    if (this.isRecording) {
+      this.recorder?.stop();
+      this.isRecording = false;
+    } else {
+      this.recorder?.start();
+      this.isRecording = true;
+    }
   }
 }

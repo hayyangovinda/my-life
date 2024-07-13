@@ -15,7 +15,6 @@ footer {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 10px;
-    margin: 0 10px;
     resize: none;
     height: 40px;
     max-height: 120px;
@@ -83,7 +82,7 @@ textarea {
   padding: 8px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  margin: 0 8px;
+  width: 100%;
 }
 
 .send,
@@ -145,4 +144,17 @@ h5 {
   position: absolute;
   right: -17px;
   top: -12px;
+}
+
+.text-area-wrapper {
+  width: 100%;
+  margin: 0 10px;
+  position: relative;
+
+  svg {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    cursor: pointer;
+  }
 }
