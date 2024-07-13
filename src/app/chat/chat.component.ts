@@ -1,15 +1,23 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  inject,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpService } from '../services/http.service';
 import { UtilsService } from '../services/utils.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { SharingService } from '../services/sharing.service';
+import { LongPressDirective } from '../directives/long-press.directive';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [NgFor, FormsModule, NgIf, MatSidenavModule],
+  imports: [NgFor, FormsModule, NgIf, MatSidenavModule, LongPressDirective],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
@@ -21,6 +29,11 @@ export class ChatComponent implements OnInit {
   utilsService = inject(UtilsService);
   sharingService = inject(SharingService);
   todayChat: any;
+  showDeleteIcon: boolean = false;
+  deleteIconPosition: number | null = null;
+  messages: { text: string; type: 'received' | 'sent' }[] = [
+    { text: "Hello! What's new today?", type: 'received' },
+  ];
 
   ngOnInit(): void {
     const todayDate = this.utilsService.formatDateToStartOfDayUTC(
@@ -53,10 +66,6 @@ export class ChatComponent implements OnInit {
       textarea.style.height = '40px'; // original size
     }
   }
-
-  messages: { text: string; type: 'received' | 'sent' }[] = [
-    { text: "Hello! What's new today?", type: 'received' },
-  ];
 
   sendMessage() {
     if (this.newMessage.trim() !== '') {
@@ -109,5 +118,24 @@ export class ChatComponent implements OnInit {
 
   toggleSidenav() {
     this.sharingService.toggleSidenav();
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (
+      !target.classList.contains('delete-icon') &&
+      !target.classList.contains('sent')
+    ) {
+      this.showDeleteIcon = false;
+      this.deleteIconPosition = null;
+    }
+  }
+
+  onDeleteIconClick(i: number) {
+    this.showDeleteIcon = false;
+    this.deleteIconPosition = null;
+
+    this.messages.splice(i, 2);
   }
 }

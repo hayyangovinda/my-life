@@ -7,7 +7,7 @@
   </header>
   <div class="chat-body" id="chatBody">
     <div
-      *ngFor="let message of messages"
+      *ngFor="let message of messages; let i = index"
       class="message"
       [class.received]="message.type === 'received'"
       [class.sent]="message.type === 'sent'"
@@ -18,9 +18,26 @@
           {{ message.text }}
         </p>
       </div>
-      <p *ngIf="message.type === 'sent'" class="sent">
-        {{ message.text }}
-      </p>
+      <div class="message-container">
+        <p
+          appLongPress
+          (longPress)="showDeleteIcon = true; deleteIconPosition = i"
+          *ngIf="message.type === 'sent'"
+          class="sent"
+        >
+          {{ message.text }}
+        </p>
+        <img
+          (click)="onDeleteIconClick(i)"
+          class="delete-icon"
+          src="../../assets/icons/delete.png"
+          *ngIf="
+            showDeleteIcon &&
+            message.type === 'sent' &&
+            i === deleteIconPosition
+          "
+        />
+      </div>
     </div>
   </div>
   <footer>
