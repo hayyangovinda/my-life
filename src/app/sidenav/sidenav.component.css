@@ -33,3 +33,14 @@ h5 {
   width: 100%;
   transition: all 0.3s ease-in-out;
 }
+
+.active-route {
+  color: #fff;
+  background-color: #55ad90;
+  border: none;
+  outline: none;
+
+  svg {
+    fill: #fff;
+  }
+}

@@ -10,7 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: true,
   imports: [],
   templateUrl: './check-email.component.html',
-  styleUrl: './check-email.component.css',
+  styleUrls: ['../login/login.component.css', './check-email.component.css'],
 })
 export class CheckEmailComponent {
   sharingService = inject(SharingService);

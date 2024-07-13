@@ -1,0 +1,83 @@
+.email-title {
+  margin-top: 30px;
+  margin-bottom: 7px;
+  color: #55ad90;
+  font-size: 34px;
+}
+
+img {
+  margin-top: 50px;
+}
+
+.input {
+  border: none;
+  padding-left: 25px;
+  width: 80%;
+  color: hsl(15, 100%, 57%);
+}
+
+.input:focus {
+  outline: #ff5b22 solid 2px;
+}
+
+.input-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.password {
+  margin-bottom: 7px;
+}
+
+.forgot,
+.sign-up,
+.or {
+  font-size: 18px;
+  font-weight: 600;
+  color: #55ad90;
+}
+
+.sign-up {
+  font-size: 16px;
+  margin-bottom: 50px;
+  color: #ff5b24;
+}
+
+.main {
+  position: absolute;
+  height: 100vh;
+  z-index: 100;
+  top: 0;
+  left: 0;
+}
+
+.or {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.resend {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #01204e;
+}
+
+.back {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  color: #01204e;
+  margin-bottom: 20px;
+  align-self: center;
+  img {
+    margin: 0;
+    width: 15px;
+    height: 15px;
+  }
+}
