@@ -50,4 +50,8 @@ export class HttpService {
   transcribeAudio(formData: FormData) {
     return this.http.post(`${this.baseUrl}transcribe`, formData);
   }
+
+  forgotPassword(body: any) {
+    return this.http.post(`${this.baseUrl}auth/forgot-password`, body);
+  }
 }

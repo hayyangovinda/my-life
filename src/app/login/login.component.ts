@@ -36,7 +36,7 @@ export class LoginComponent {
   }
 
   onRegisterClick() {
-    this.router.navigateByUrl('sign-in');
+    this.router.navigateByUrl('register');
   }
 
   onLoginClick() {

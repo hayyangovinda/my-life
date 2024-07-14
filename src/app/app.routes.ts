@@ -23,6 +23,15 @@ export const routes: Routes = [
         (m) => m.CheckEmailComponent
       ),
   },
+
+  {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./forgot-password/forgot-password.component').then(
+        (m) => m.ForgotPasswordComponent
+      ),
+  },
+
   {
     path: 'home',
     loadComponent: () =>

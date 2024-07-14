@@ -34,7 +34,7 @@ export class RegisterComponent {
   passwordShowIcon = false;
 
   onLoginClick() {
-    throw new Error('Method not implemented.');
+    this.router.navigateByUrl('login');
   }
 
   onRegisterClick() {
