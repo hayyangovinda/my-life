@@ -2,7 +2,7 @@
   <header>
     <div class="header-container">
       <img (click)="toggleSidenav()" src="../../assets/icons/menu.svg" alt="" />
-      <h5>My Life</h5>
+      <h5>Today</h5>
     </div>
   </header>
   <div class="chat-body" id="chatBody">
@@ -18,18 +18,27 @@
           {{ message.text }}
         </p>
       </div>
-      <div class="message-container">
+      <div
+        appLongPress
+        (longPress)="showDeleteIcon = true; deleteIconPosition = i"
+        class="message-container"
+      >
         <p
           [id]="'sent' + i"
           contenteditable="true"
           (blur)="updateMessage(i)"
-          appLongPress
-          (longPress)="showDeleteIcon = true; deleteIconPosition = i"
           *ngIf="message.type === 'sent'"
           class="sent"
         >
           {{ message.text }}
         </p>
+        <img
+          *ngIf="message.type === 'sent' && message.image"
+          [src]="message.image"
+          alt="Sent Image"
+          class="chat-image"
+        />
+
         <img
           (click)="onDeleteIconClick(i)"
           class="delete-icon"

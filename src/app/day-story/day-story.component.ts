@@ -35,6 +35,8 @@ export class DayStoryComponent implements OnInit {
         .map((prompt: any) => prompt.text)
         .join(',');
 
+      console.log('dayPrompts', this.dayPrompts);
+
       this.promptToSend = this.promptToSend + this.dayPrompts;
 
       if (dayChat.story) {

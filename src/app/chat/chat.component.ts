@@ -49,9 +49,11 @@ export class ChatComponent implements OnInit {
   recorder: MediaRecorder | null = null;
   chunks: any = [];
   selectedFile: File | null = null;
-  messages: { text: string; type: 'received' | 'sent' }[] = [
-    { text: "Hello! What's new today?", type: 'received' },
-  ];
+  messages: {
+    text: string;
+    type: 'received' | 'sent';
+    image: string | null;
+  }[] = [{ text: "Hello! What's new today?", type: 'received', image: null }];
   response: string = '';
   audioSrc: string = '';
   ngOnInit(): void {
@@ -68,7 +70,13 @@ export class ChatComponent implements OnInit {
         this.httpService
           .createDayChat({
             date: todayDate,
-            inputs: [{ text: "Hello! What's new today?", type: 'received' }],
+            inputs: [
+              {
+                text: "Hello! What's new today?",
+                type: 'received',
+                image: null,
+              },
+            ],
           })
           .subscribe((response2: any) => {
             this.todayChat = response2;
@@ -89,7 +97,7 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (this.newMessage.trim() !== '') {
-      this.messages.push({ text: this.newMessage, type: 'sent' });
+      this.messages.push({ text: this.newMessage, type: 'sent', image: null });
 
       const responses = [
         'Got it!',
@@ -103,7 +111,11 @@ export class ChatComponent implements OnInit {
       const randomIndex = Math.floor(Math.random() * responses.length);
       const randomResponse = responses[randomIndex];
 
-      this.messages.push({ text: randomResponse, type: 'received' });
+      this.messages.push({
+        text: randomResponse,
+        type: 'received',
+        image: null,
+      });
 
       this.todayChat.inputs = this.messages;
 
@@ -157,6 +169,15 @@ export class ChatComponent implements OnInit {
     this.deleteIconPosition = null;
 
     this.messages.splice(i, 2);
+
+    this.todayChat.inputs = this.messages;
+    this.httpService
+      .updateDayChat(this.todayChat._id, {
+        inputs: this.todayChat.inputs,
+      })
+      .subscribe((response: any) => {
+        console.log('update', response);
+      });
   }
 
   setUpAudio() {
@@ -226,6 +247,25 @@ export class ChatComponent implements OnInit {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       console.log('Selected file:', file);
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const imageUrl = e.target.result;
+        this.messages.push({ text: '~img', type: 'sent', image: imageUrl });
+
+        this.todayChat.inputs = this.messages;
+
+        this.httpService
+          .updateDayChat(this.todayChat._id, {
+            inputs: this.todayChat.inputs,
+          })
+          .subscribe((response: any) => {
+            console.log('update', response);
+          });
+
+        this.scrollChatToBottom();
+      };
+      reader.readAsDataURL(file);
     }
   }
 
