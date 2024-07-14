@@ -16,4 +16,10 @@ export class SidenavComponent {
   toggleSidenav() {
     this.sharingService.toggleSidenav();
   }
+
+  onLogout() {
+    this.toggleSidenav();
+    localStorage.removeItem('mylife-token');
+    this.router.navigateByUrl('login');
+  }
 }
