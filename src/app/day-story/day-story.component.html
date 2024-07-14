@@ -6,7 +6,12 @@
     </div>
   </header>
   <h4>{{ date | date : "EEEE, dd MMMM yyyy" }}</h4>
-  <div class="story-body">
+  <div
+    (blur)="updateStory()"
+    contenteditable="true"
+    id="story-body"
+    class="story-body"
+  >
     {{ generatedStory }}
   </div>
 </main>

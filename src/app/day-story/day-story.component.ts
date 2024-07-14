@@ -53,4 +53,15 @@ export class DayStoryComponent implements OnInit {
         });
     });
   }
+
+  updateStory() {
+    const editedStory = document.getElementById('story-body')?.innerText;
+    this.httpService
+      .updateDayChat(this.dayChatId, {
+        story: editedStory,
+      })
+      .subscribe((response: any) => {
+        console.log(response);
+      });
+  }
 }
