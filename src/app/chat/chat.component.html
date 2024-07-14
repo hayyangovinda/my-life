@@ -20,6 +20,9 @@
       </div>
       <div class="message-container">
         <p
+          [id]="'sent' + i"
+          contenteditable="true"
+          (blur)="updateMessage(i)"
           appLongPress
           (longPress)="showDeleteIcon = true; deleteIconPosition = i"
           *ngIf="message.type === 'sent'"

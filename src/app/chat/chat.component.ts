@@ -228,4 +228,24 @@ export class ChatComponent implements OnInit {
       console.log('Selected file:', file);
     }
   }
+
+  updateMessage(index: any) {
+    const message = this.messages[index];
+    console.log(message);
+    const editedMessage = document.getElementById('sent' + index)?.innerText;
+    console.log(editedMessage);
+    if (editedMessage === undefined) {
+      return;
+    }
+    this.messages[index].text = editedMessage;
+    console.log(this.messages);
+
+    this.httpService
+      .updateDayChat(this.todayChat._id, {
+        inputs: this.todayChat.inputs,
+      })
+      .subscribe((response: any) => {
+        console.log('update', response);
+      });
+  }
 }
