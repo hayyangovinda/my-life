@@ -35,10 +35,12 @@ export class ChatComponent implements OnInit {
   isRecording: boolean = false;
   recorder: MediaRecorder | null = null;
   chunks: any = [];
+  selectedFile: File | null = null;
   messages: { text: string; type: 'received' | 'sent' }[] = [
     { text: "Hello! What's new today?", type: 'received' },
   ];
-
+  response: string = '';
+  audioSrc: string = '';
   ngOnInit(): void {
     const todayDate = this.utilsService.formatDateToStartOfDayUTC(
       this.todayDate
@@ -156,7 +158,12 @@ export class ChatComponent implements OnInit {
           const blob = new Blob(this.chunks, { type: 'audio/wav' });
           this.chunks = [];
           const audioUrl = URL.createObjectURL(blob);
-          console.log('audioUrl', audioUrl);
+
+          this.audioSrc = audioUrl;
+          this.selectedFile = new File([blob], 'recording.wav', {
+            type: 'audio/wav',
+          });
+          this.transcribeAudio();
         };
       });
     }
@@ -177,5 +184,17 @@ export class ChatComponent implements OnInit {
       console.log('recording started');
       this.isRecording = true;
     }
+  }
+
+  transcribeAudio() {
+    if (!this.selectedFile) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append('audio', this.selectedFile);
+    this.httpService.transcribeAudio(formData).subscribe((response: any) => {
+      console.log(response);
+      this.response = response;
+    });
   }
 }

@@ -46,4 +46,8 @@ export class HttpService {
   generateStory(body: any) {
     return this.http.post(`${this.baseUrl}ai`, body);
   }
+
+  transcribeAudio(formData: FormData) {
+    return this.http.post(`${this.baseUrl}transcribe`, formData);
+  }
 }
