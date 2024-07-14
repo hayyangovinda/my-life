@@ -23,7 +23,7 @@ import { LongPressDirective } from '../directives/long-press.directive';
 })
 export class ChatComponent implements OnInit {
   inputs: string[] = [];
-  todayDate: Date = new Date();
+  todayDate: Date = new Date('2023-5-1');
   newMessage: string = '';
   httpService = inject(HttpService);
   utilsService = inject(UtilsService);

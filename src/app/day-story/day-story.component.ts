@@ -19,7 +19,7 @@ export class DayStoryComponent implements OnInit {
   dayChatId: any;
 
   promptToSend =
-    'rewrite the following as an entry in a diary/journal in a proper tone,  write it in the first person,u can use emojis, write good easy simple english.give me only the story,no title no date, no other details \n\n';
+    'rewrite the following as an entry in a diary/journal in a proper tone,  write it in the first person,u can use emojis, write good easy simple english.give me only the story,no title no date, no other details ,do not invent your own story,base iton the given prompts \n\n';
   toggleSidenav() {
     this.sharingService.toggleSidenav();
   }
