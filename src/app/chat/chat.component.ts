@@ -215,6 +215,9 @@ export class ChatComponent implements OnInit {
     if (type === 'camera') {
       this.fileInput.nativeElement.capture = 'environment';
     }
+    if (type === 'gallery') {
+      this.fileInput.nativeElement.removeAttribute('capture');
+    }
     this.fileInput.nativeElement.click();
   }
 
@@ -223,7 +226,6 @@ export class ChatComponent implements OnInit {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       console.log('Selected file:', file);
-      // Implement your file handling logic here
     }
   }
 }
