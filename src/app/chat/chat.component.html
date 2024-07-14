@@ -5,8 +5,6 @@
       <h5>My Life</h5>
     </div>
   </header>
-
-  <h4>{{ response }}</h4>
   <div class="chat-body" id="chatBody">
     <div
       *ngFor="let message of messages; let i = index"
@@ -43,7 +41,30 @@
     </div>
   </div>
   <footer>
-    <img class="camera" src="assets/icons/camera.svg" alt="" />
+    <img
+      [matMenuTriggerFor]="menu"
+      class="camera"
+      src="assets/icons/camera.svg"
+      alt=""
+    />
+    <mat-menu #menu="matMenu">
+      <button (click)="openFileUploader('camera')" mat-menu-item>
+        <mat-icon>camera</mat-icon>
+        <span>Camera</span>
+      </button>
+      <button (click)="openFileUploader('gallery')" mat-menu-item>
+        <mat-icon>photos</mat-icon>
+        <span>Gallery</span>
+      </button>
+    </mat-menu>
+    <input
+      type="file"
+      accept="image/*"
+      style="display: none"
+      #fileInput
+      (change)="onFileSelected($event)"
+    />
+
     <div class="text-area-wrapper">
       <textarea
         [(ngModel)]="newMessage"

@@ -1,11 +1,13 @@
 import { NgFor, NgIf } from '@angular/common';
 import {
   Component,
+  ElementRef,
   EventEmitter,
   HostListener,
   inject,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpService } from '../services/http.service';
@@ -13,15 +15,26 @@ import { UtilsService } from '../services/utils.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { SharingService } from '../services/sharing.service';
 import { LongPressDirective } from '../directives/long-press.directive';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [NgFor, FormsModule, NgIf, MatSidenavModule, LongPressDirective],
+  imports: [
+    NgFor,
+    FormsModule,
+    NgIf,
+    MatSidenavModule,
+    LongPressDirective,
+    MatMenuModule,
+    MatIconModule,
+  ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
 export class ChatComponent implements OnInit {
+  @ViewChild('fileInput') fileInput!: ElementRef;
   inputs: string[] = [];
   todayDate: Date = new Date('2023-5-1');
   newMessage: string = '';
@@ -194,7 +207,23 @@ export class ChatComponent implements OnInit {
     formData.append('audio', this.selectedFile);
     this.httpService.transcribeAudio(formData).subscribe((response: any) => {
       console.log(response);
-      this.response = response;
+      this.newMessage = response.transcription;
     });
+  }
+
+  openFileUploader(type: string) {
+    if (type === 'camera') {
+      this.fileInput.nativeElement.capture = 'environment';
+    }
+    this.fileInput.nativeElement.click();
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      console.log('Selected file:', file);
+      // Implement your file handling logic here
+    }
   }
 }
