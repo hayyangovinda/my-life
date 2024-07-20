@@ -32,4 +32,19 @@ export class SharingService {
   updateDayToGenerate(day: any) {
     this.dayToGenerate.next(day);
   }
+
+  imgSrcs = new BehaviorSubject<string[]>([]);
+  imgSrcs$ = this.imgSrcs.asObservable();
+
+  updateImgSrcs(srcs: string[]) {
+    this.imgSrcs.next(srcs);
+  }
+
+  date = new BehaviorSubject(new Date());
+
+  date$ = this.date.asObservable();
+
+  updateDate(date: Date) {
+    this.date.next(date);
+  }
 }

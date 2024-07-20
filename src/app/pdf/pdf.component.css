@@ -12,6 +12,7 @@ main {
 p {
   text-align: justify;
   line-height: 30px;
+  width: 850px;
 }
 
 h4 {

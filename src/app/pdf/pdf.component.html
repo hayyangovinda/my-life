@@ -1,5 +1,5 @@
 <main>
-  <h4>Monday 12.06.2024</h4>
+  <h4>{{ date | date : "EEEE, dd.MMM.yyyy" }}</h4>
   <p>
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero ducimus
     debitis iure tempora odit tenetur! Nulla eligendi nihil ullam, ut illum, et
@@ -54,11 +54,9 @@
     voluptas nemo rerum perferendis quod atque consectetur amet debitis?
   </p>
   <div class="img-container">
-    <img src="../../assets/pexels-willianjusten-15829424.jpg" alt="" />
-    <img src="../../assets/pexels-willianjusten-15829428.jpg" alt="" />
-    <img src="../../assets/pexels-willianjusten-15829779.jpg" alt="" />
-    <img src="../../assets/pexels-willianjusten-15829779.jpg" alt="" />
-    <img src="../../assets/pexels-willianjusten-15829779.jpg" alt="" />
-    <img src="../../assets/pexels-willianjusten-15829428.jpg" alt="" />
+    @for (src of imgSrcs; track $index) {
+    <img [src]="src" alt="" />
+
+    }
   </div>
 </main>
