@@ -54,4 +54,10 @@ export class HttpService {
   forgotPassword(body: any) {
     return this.http.post(`${this.baseUrl}auth/forgot-password`, body);
   }
+
+  uploadImage(formdata: FormData) {
+    // add header
+
+    return this.http.post(`${this.baseUrl}day-chat/image`, formdata);
+  }
 }

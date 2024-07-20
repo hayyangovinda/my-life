@@ -65,7 +65,9 @@ export class ChatComponent implements OnInit {
       if (response.length) {
         this.todayChat = response[0];
         console.log(this.todayChat);
+
         this.messages = this.todayChat.inputs;
+        this.scrollChatToBottom();
       } else {
         this.httpService
           .createDayChat({
@@ -250,20 +252,24 @@ export class ChatComponent implements OnInit {
 
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        const imageUrl = e.target.result;
-        this.messages.push({ text: '~img', type: 'sent', image: imageUrl });
+        // const imageUrl = e.target.result;
 
-        this.todayChat.inputs = this.messages;
-
-        this.httpService
-          .updateDayChat(this.todayChat._id, {
-            inputs: this.todayChat.inputs,
-          })
-          .subscribe((response: any) => {
-            console.log('update', response);
-          });
-
-        this.scrollChatToBottom();
+        const formData = new FormData();
+        formData.append('image', file);
+        this.httpService.uploadImage(formData).subscribe((response: any) => {
+          console.log(response.image.src);
+          const imageUrl = response.image.src;
+          this.messages.push({ text: '~img', type: 'sent', image: imageUrl });
+          this.todayChat.inputs = this.messages;
+          this.httpService
+            .updateDayChat(this.todayChat._id, {
+              inputs: this.todayChat.inputs,
+            })
+            .subscribe((response: any) => {
+              console.log('update', response);
+              this.scrollChatToBottom();
+            });
+        });
       };
       reader.readAsDataURL(file);
     }
