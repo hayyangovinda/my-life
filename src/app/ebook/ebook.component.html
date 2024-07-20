@@ -31,7 +31,7 @@
     </div>
   </div>
   <div class="btn-container">
-    <button class="btn" type="button">
+    <button (click)="onGenerateClick()" class="btn" type="button">
       <strong>GENERATE</strong>
       <div id="container-stars">
         <div id="stars"></div>
@@ -44,3 +44,6 @@
     </button>
   </div>
 </main>
+<div #pdf>
+  <app-pdf></app-pdf>
+</div>
