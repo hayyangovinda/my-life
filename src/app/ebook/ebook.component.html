@@ -1,1 +1,46 @@
-<p>ebook works!</p>
+<main class="main-daily">
+  <header>
+    <div class="header-container">
+      <img (click)="toggleSidenav()" src="../../assets/icons/menu.svg" alt="" />
+      <h5>My Ebook</h5>
+    </div>
+  </header>
+
+  <h4>Select a date range</h4>
+  <div class="date-picker">
+    <div class="inner-date-picker">
+      <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+        <input
+          readonly
+          matStartDate
+          formControlName="start"
+          placeholder="Start date"
+        />
+        <input
+          readonly
+          matEndDate
+          formControlName="end"
+          placeholder="End date"
+        />
+      </mat-date-range-input>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker touchUi="true" #picker></mat-date-range-picker>
+    </div>
+  </div>
+  <div class="btn-container">
+    <button class="btn" type="button">
+      <strong>GENERATE</strong>
+      <div id="container-stars">
+        <div id="stars"></div>
+      </div>
+
+      <div id="glow">
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+    </button>
+  </div>
+</main>

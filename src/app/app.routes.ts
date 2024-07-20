@@ -53,4 +53,10 @@ export const routes: Routes = [
         (m) => m.DayStoryComponent
       ),
   },
+
+  {
+    path: 'ebook',
+    loadComponent: () =>
+      import('./ebook/ebook.component').then((m) => m.EbookComponent),
+  },
 ];
