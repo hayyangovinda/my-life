@@ -64,7 +64,6 @@ export class ChatComponent implements OnInit {
     this.httpService.getDayChat(todayDate).subscribe((response: any) => {
       if (response.length) {
         this.todayChat = response[0];
-        console.log(this.todayChat);
 
         this.messages = this.todayChat.inputs;
         this.scrollChatToBottom();
@@ -125,9 +124,7 @@ export class ChatComponent implements OnInit {
         .updateDayChat(this.todayChat._id, {
           inputs: this.todayChat.inputs,
         })
-        .subscribe((response: any) => {
-          console.log('update', response);
-        });
+        .subscribe((response: any) => {});
       this.newMessage = '';
 
       this.scrollChatToBottom();
@@ -177,9 +174,7 @@ export class ChatComponent implements OnInit {
       .updateDayChat(this.todayChat._id, {
         inputs: this.todayChat.inputs,
       })
-      .subscribe((response: any) => {
-        console.log('update', response);
-      });
+      .subscribe((response: any) => {});
   }
 
   setUpAudio() {
@@ -213,11 +208,11 @@ export class ChatComponent implements OnInit {
     }
     if (this.isRecording) {
       this.recorder?.stop();
-      console.log('recording stopped');
+
       this.isRecording = false;
     } else {
       this.recorder?.start();
-      console.log('recording started');
+
       this.isRecording = true;
     }
   }
@@ -229,7 +224,6 @@ export class ChatComponent implements OnInit {
     const formData = new FormData();
     formData.append('audio', this.selectedFile);
     this.httpService.transcribeAudio(formData).subscribe((response: any) => {
-      console.log(response);
       this.newMessage = response.transcription;
     });
   }
@@ -248,7 +242,6 @@ export class ChatComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      console.log('Selected file:', file);
 
       const reader = new FileReader();
       reader.onload = (e: any) => {
@@ -257,7 +250,6 @@ export class ChatComponent implements OnInit {
         const formData = new FormData();
         formData.append('image', file);
         this.httpService.uploadImage(formData).subscribe((response: any) => {
-          console.log(response.image.src);
           const imageUrl = response.image.src;
           this.messages.push({ text: '~img', type: 'sent', image: imageUrl });
           this.todayChat.inputs = this.messages;
@@ -266,7 +258,6 @@ export class ChatComponent implements OnInit {
               inputs: this.todayChat.inputs,
             })
             .subscribe((response: any) => {
-              console.log('update', response);
               this.scrollChatToBottom();
             });
         });
@@ -277,21 +268,18 @@ export class ChatComponent implements OnInit {
 
   updateMessage(index: any) {
     const message = this.messages[index];
-    console.log(message);
+
     const editedMessage = document.getElementById('sent' + index)?.innerText;
-    console.log(editedMessage);
+
     if (editedMessage === undefined) {
       return;
     }
     this.messages[index].text = editedMessage;
-    console.log(this.messages);
 
     this.httpService
       .updateDayChat(this.todayChat._id, {
         inputs: this.todayChat.inputs,
       })
-      .subscribe((response: any) => {
-        console.log('update', response);
-      });
+      .subscribe((response: any) => {});
   }
 }
