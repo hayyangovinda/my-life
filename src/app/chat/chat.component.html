@@ -105,8 +105,15 @@
     />
   </footer>
 </main>
-@if (showRecordingLoader) {
+
+@if (showLoaders) {
+
 <div class="loader">
+  @if (showRecordingLoader) {
   <record-loader (stopRecording)="toggleRecording()"></record-loader>
+  } @if( showImageLoader) {
+
+  <app-loader></app-loader>
+  }
 </div>
 }

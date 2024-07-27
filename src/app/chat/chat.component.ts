@@ -18,6 +18,7 @@ import { LongPressDirective } from '../directives/long-press.directive';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { RecordLoaderComponent } from '../record-loader/record-loader.component';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-chat',
@@ -31,6 +32,7 @@ import { RecordLoaderComponent } from '../record-loader/record-loader.component'
     MatMenuModule,
     MatIconModule,
     RecordLoaderComponent,
+    LoaderComponent,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
@@ -59,6 +61,8 @@ export class ChatComponent implements OnInit {
   response: string = '';
   audioSrc: string = '';
   showRecordingLoader: boolean = false;
+  showImageLoader: boolean = false;
+  showLoaders: boolean = false;
   ngOnInit(): void {
     const todayDate = this.utilsService.formatDateToStartOfDayUTC(
       this.todayDate
@@ -211,10 +215,12 @@ export class ChatComponent implements OnInit {
     }
     if (this.isRecording) {
       this.recorder?.stop();
+      this.showLoaders = false;
       this.showRecordingLoader = false;
 
       this.isRecording = false;
     } else {
+      this.showLoaders = true;
       this.showRecordingLoader = true;
       this.recorder?.start();
 
@@ -244,6 +250,9 @@ export class ChatComponent implements OnInit {
   }
 
   onFileSelected(event: Event) {
+    this.showLoaders = true;
+    this.showImageLoader = true;
+
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
@@ -254,18 +263,34 @@ export class ChatComponent implements OnInit {
 
         const formData = new FormData();
         formData.append('image', file);
-        this.httpService.uploadImage(formData).subscribe((response: any) => {
-          const imageUrl = response.image.src;
-          this.messages.push({ text: '~img', type: 'sent', image: imageUrl });
-          this.todayChat.inputs = this.messages;
-          this.httpService
-            .updateDayChat(this.todayChat._id, {
-              inputs: this.todayChat.inputs,
-            })
-            .subscribe((response: any) => {
-              this.scrollChatToBottom();
-            });
-        });
+        this.httpService.uploadImage(formData).subscribe(
+          (response: any) => {
+            const imageUrl = response.image.src;
+            this.messages.push({ text: '~img', type: 'sent', image: imageUrl });
+            this.todayChat.inputs = this.messages;
+            this.httpService
+              .updateDayChat(this.todayChat._id, {
+                inputs: this.todayChat.inputs,
+              })
+              .subscribe(
+                (response: any) => {
+                  this.showLoaders = false;
+                  this.showImageLoader = false;
+                  this.scrollChatToBottom();
+                },
+                (error: any) => {
+                  this.showLoaders = false;
+                  this.showImageLoader = false;
+                  console.log(error);
+                }
+              );
+          },
+          (error: any) => {
+            this.showLoaders = false;
+            this.showImageLoader = false;
+            console.log(error);
+          }
+        );
       };
       reader.readAsDataURL(file);
     }
