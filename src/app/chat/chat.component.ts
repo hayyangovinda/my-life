@@ -58,6 +58,7 @@ export class ChatComponent implements OnInit {
   }[] = [{ text: "Hello! What's new today?", type: 'received', image: null }];
   response: string = '';
   audioSrc: string = '';
+  showRecordingLoader: boolean = false;
   ngOnInit(): void {
     const todayDate = this.utilsService.formatDateToStartOfDayUTC(
       this.todayDate
@@ -210,9 +211,11 @@ export class ChatComponent implements OnInit {
     }
     if (this.isRecording) {
       this.recorder?.stop();
+      this.showRecordingLoader = false;
 
       this.isRecording = false;
     } else {
+      this.showRecordingLoader = true;
       this.recorder?.start();
 
       this.isRecording = true;

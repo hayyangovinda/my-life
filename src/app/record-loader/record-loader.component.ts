@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -8,4 +8,10 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './record-loader.component.html',
   styleUrl: './record-loader.component.css',
 })
-export class RecordLoaderComponent {}
+export class RecordLoaderComponent {
+  @Output() stopRecording = new EventEmitter();
+
+  onStopRecording() {
+    this.stopRecording.emit();
+  }
+}
