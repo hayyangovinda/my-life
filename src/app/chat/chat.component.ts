@@ -17,6 +17,7 @@ import { SharingService } from '../services/sharing.service';
 import { LongPressDirective } from '../directives/long-press.directive';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import { RecordLoaderComponent } from '../record-loader/record-loader.component';
 
 @Component({
   selector: 'app-chat',
@@ -29,6 +30,7 @@ import { MatIconModule } from '@angular/material/icon';
     LongPressDirective,
     MatMenuModule,
     MatIconModule,
+    RecordLoaderComponent,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
