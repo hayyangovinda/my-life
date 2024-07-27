@@ -36,7 +36,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class ChatComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
   inputs: string[] = [];
-  todayDate: Date = new Date('2023-06-17');
+  todayDate: Date = new Date('2024-07-20');
   newMessage: string = '';
   httpService = inject(HttpService);
   utilsService = inject(UtilsService);

@@ -20,13 +20,17 @@ export class PdfComponent implements OnInit {
     this.sharingService.imgSrcs$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((srcs) => {
-        this.imgSrcs = srcs;
+        if (srcs) {
+          this.imgSrcs = srcs;
+        }
       });
 
     this.sharingService.date$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((date) => {
-        this.date = date;
+        if (date) {
+          this.date = date;
+        }
       });
   }
 }
