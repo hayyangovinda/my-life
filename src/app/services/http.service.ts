@@ -6,7 +6,8 @@ import { inject, Injectable } from '@angular/core';
 })
 export class HttpService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:8000/api/v1/';
+  // private baseUrl = 'http://localhost:8000/api/v1/';
+  private baseUrl = 'https://my-life-api.onrender.com/api/v1/';
 
   getDayChat(date: any) {
     const params = new HttpParams().set('date', date);
@@ -47,8 +48,8 @@ export class HttpService {
     return this.http.post(`${this.baseUrl}ai`, body);
   }
 
-  transcribeAudio(formData: FormData) {
-    return this.http.post(`${this.baseUrl}transcribe`, formData);
+  transcribeAudio(body: any) {
+    return this.http.post(`${this.baseUrl}transcribe`, body);
   }
 
   forgotPassword(body: any) {

@@ -185,6 +185,8 @@ export class ChatComponent implements OnInit {
   }
 
   setUpAudio() {
+    console.log(navigator.mediaDevices);
+
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
         this.recorder = new MediaRecorder(stream);
@@ -201,7 +203,19 @@ export class ChatComponent implements OnInit {
           this.selectedFile = new File([blob], 'recording.wav', {
             type: 'audio/wav',
           });
-          this.transcribeAudio();
+
+          const reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onloadend = () => {
+            if (typeof reader.result === 'string') {
+              const base64String = reader.result.split(',')[1]; // Get the base64 part of the result
+
+              // Now you can send the base64String in your POST request
+              this.transcribeAudio(base64String);
+            } else {
+              console.error('Error reading the file as a base64 string.');
+            }
+          };
         };
       });
     }
@@ -228,15 +242,12 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  transcribeAudio() {
-    if (!this.selectedFile) {
-      return;
-    }
-    const formData = new FormData();
-    formData.append('audio', this.selectedFile);
-    this.httpService.transcribeAudio(formData).subscribe((response: any) => {
-      this.newMessage = response.transcription;
-    });
+  transcribeAudio(string: string) {
+    this.httpService
+      .transcribeAudio({ audio: string })
+      .subscribe((response: any) => {
+        console.log(response);
+      });
   }
 
   openFileUploader(type: string) {
