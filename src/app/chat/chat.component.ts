@@ -19,6 +19,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { RecordLoaderComponent } from '../record-loader/record-loader.component';
 import { LoaderComponent } from '../loader/loader.component';
+import { VoiceRecorder } from 'capacitor-voice-recorder';
 
 @Component({
   selector: 'app-chat',
@@ -63,10 +64,14 @@ export class ChatComponent implements OnInit {
   showRecordingLoader: boolean = false;
   showImageLoader: boolean = false;
   showLoaders: boolean = false;
+
   ngOnInit(): void {
     const todayDate = this.utilsService.formatDateToStartOfDayUTC(
       this.todayDate
     );
+    VoiceRecorder.requestAudioRecordingPermission().then((result) => {
+      console.log(result);
+    });
     this.setUpAudio();
     this.httpService.getDayChat(todayDate).subscribe((response: any) => {
       if (response.length) {
@@ -195,15 +200,16 @@ export class ChatComponent implements OnInit {
         };
 
         this.recorder.onstop = () => {
-          const blob = new Blob(this.chunks, { type: 'audio/wav' });
+          const blob = new Blob(this.chunks, { type: 'audio/aiff' });
           this.chunks = [];
           const audioUrl = URL.createObjectURL(blob);
 
           this.audioSrc = audioUrl;
 
-          this.selectedFile = new File([blob], 'recording.wav', {
-            type: 'audio/wav',
+          this.selectedFile = new File([blob], 'recording.aiff', {
+            type: 'audio/aiff',
           });
+          console.log('recording-stop');
           console.log(this.selectedFile);
 
           const reader = new FileReader();
@@ -249,6 +255,7 @@ export class ChatComponent implements OnInit {
       .transcribeAudio({ audio: string })
       .subscribe((response: any) => {
         console.log(response);
+        this.newMessage = JSON.stringify(response);
       });
   }
 
@@ -324,5 +331,32 @@ export class ChatComponent implements OnInit {
         inputs: this.todayChat.inputs,
       })
       .subscribe((response: any) => {});
+  }
+
+  startRecording() {
+    if (this.isRecording) {
+      return;
+    }
+    this.showLoaders = true;
+    this.showRecordingLoader = true;
+    this.isRecording = true;
+    VoiceRecorder.startRecording();
+  }
+
+  async stopRecording() {
+    if (!this.isRecording) {
+      return;
+    }
+    this.showLoaders = false;
+    this.showRecordingLoader = false;
+    this.isRecording = false;
+    VoiceRecorder.stopRecording().then(async (result) => {
+      console.log({ result });
+      if (result.value && result.value.recordDataBase64) {
+        const recordData = result.value.recordDataBase64;
+
+        this.transcribeAudio(recordData);
+      }
+    });
   }
 }
