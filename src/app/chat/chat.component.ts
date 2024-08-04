@@ -185,7 +185,7 @@ export class ChatComponent implements OnInit {
   }
 
   setUpAudio() {
-    console.log(navigator.mediaDevices);
+    console.log('navigator', navigator.mediaDevices);
 
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
@@ -200,9 +200,11 @@ export class ChatComponent implements OnInit {
           const audioUrl = URL.createObjectURL(blob);
 
           this.audioSrc = audioUrl;
+
           this.selectedFile = new File([blob], 'recording.wav', {
             type: 'audio/wav',
           });
+          console.log(this.selectedFile);
 
           const reader = new FileReader();
           reader.readAsDataURL(blob);
