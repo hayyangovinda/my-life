@@ -206,8 +206,8 @@ export class ChatComponent implements OnInit {
 
           this.audioSrc = audioUrl;
 
-          this.selectedFile = new File([blob], 'recording.aiff', {
-            type: 'audio/aiff',
+          this.selectedFile = new File([blob], 'recording.wav', {
+            type: 'audio/wav',
           });
           console.log('recording-stop');
           console.log(this.selectedFile);
