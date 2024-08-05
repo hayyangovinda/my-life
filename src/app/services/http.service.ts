@@ -6,8 +6,8 @@ import { inject, Injectable } from '@angular/core';
 })
 export class HttpService {
   private http = inject(HttpClient);
-  // private baseUrl = 'http://localhost:8000/api/v1/';
-  private baseUrl = 'https://my-life-api.onrender.com/api/v1/';
+  private baseUrl = 'http://localhost:8000/api/v1/';
+  // private baseUrl = 'https://my-life-api.onrender.com/api/v1/';
 
   getDayChat(date: any) {
     const params = new HttpParams().set('date', date);

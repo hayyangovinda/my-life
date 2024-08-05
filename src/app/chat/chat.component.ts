@@ -211,19 +211,22 @@ export class ChatComponent implements OnInit {
           });
           console.log('recording-stop');
           console.log(this.selectedFile);
+          const formData = new FormData();
+          formData.append('audio', this.selectedFile);
+          this.transcribeAudioBlob(formData);
 
-          const reader = new FileReader();
-          reader.readAsDataURL(blob);
-          reader.onloadend = () => {
-            if (typeof reader.result === 'string') {
-              const base64String = reader.result.split(',')[1]; // Get the base64 part of the result
+          // const reader = new FileReader();
+          // reader.readAsDataURL(blob);
+          // reader.onloadend = () => {
+          //   if (typeof reader.result === 'string') {
+          //     const base64String = reader.result.split(',')[1]; // Get the base64 part of the result
 
-              // Now you can send the base64String in your POST request
-              this.transcribeAudio(base64String);
-            } else {
-              console.error('Error reading the file as a base64 string.');
-            }
-          };
+          //     // Now you can send the base64String in your POST request
+          //     this.transcribeAudio(base64String);
+          //   } else {
+          //     console.error('Error reading the file as a base64 string.');
+          //   }
+          // };
         };
       });
     }
@@ -257,6 +260,12 @@ export class ChatComponent implements OnInit {
         console.log(response);
         this.newMessage = JSON.stringify(response);
       });
+  }
+  transcribeAudioBlob(formData: FormData) {
+    this.httpService.transcribeAudio(formData).subscribe((response: any) => {
+      console.log(response);
+      this.newMessage = JSON.stringify(response);
+    });
   }
 
   openFileUploader(type: string) {
