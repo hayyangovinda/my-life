@@ -213,7 +213,7 @@ export class ChatComponent implements OnInit {
           console.log(this.selectedFile);
           const formData = new FormData();
           formData.append('audio', this.selectedFile);
-          this.downloadFile(this.selectedFile);
+          // this.downloadFile(this.selectedFile);
           this.transcribeAudioBlob(formData);
 
           // const reader = new FileReader();
@@ -326,16 +326,16 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  downloadFile(file: any) {
-    const url = URL.createObjectURL(file);
-    const a = document.createElement('a');
-    a.style.display = 'none';
-    a.href = url;
-    a.download = file.name;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-  }
+  // downloadFile(file: any) {
+  //   const url = URL.createObjectURL(file);
+  //   const a = document.createElement('a');
+  //   a.style.display = 'none';
+  //   a.href = url;
+  //   a.download = file.name;
+  //   document.body.appendChild(a);
+  //   a.click();
+  //   window.URL.revokeObjectURL(url);
+  // }
 
   updateMessage(index: any) {
     const message = this.messages[index];
