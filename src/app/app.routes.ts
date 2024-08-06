@@ -53,7 +53,13 @@ export const routes: Routes = [
         (m) => m.DayStoryComponent
       ),
   },
-
+  {
+    path: 'find-a-memory',
+    loadComponent: () =>
+      import('./find-a-memory/find-a-memory.component').then(
+        (m) => m.FindAMemoryComponent
+      ),
+  },
   {
     path: 'ebook',
     loadComponent: () =>
