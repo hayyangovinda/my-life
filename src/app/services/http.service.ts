@@ -21,8 +21,8 @@ export class HttpService {
     return this.http.patch(`${this.baseUrl}day-chat/${id}`, body);
   }
 
-  getAllDayChats() {
-    return this.http.get(`${this.baseUrl}day-chat`);
+  getAllDayChats(params?: any) {
+    return this.http.get(`${this.baseUrl}day-chat`, { params });
   }
 
   register(body: any) {

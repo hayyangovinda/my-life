@@ -68,24 +68,24 @@ export class EbookComponent implements OnInit {
   date!: Date | undefined;
 
   ngOnInit() {
-    this.httpService.getAllDayChats().subscribe((chats: any) => {
-      console.log(chats);
-      this.storiesArray = chats.map((chat: any) => {
-        return { date: chat.date, story: chat.story };
-      });
-
-      chats.forEach((chat: any) => {
-        const dayImgArray: any = [];
-        chat.inputs.forEach((input: any) => {
-          if (input.type === 'sent' && input.image) {
-            dayImgArray.push(input.image);
-          }
+    this.httpService
+      .getAllDayChats({ sorted: true })
+      .subscribe((chats: any) => {
+        console.log(chats);
+        this.storiesArray = chats.map((chat: any) => {
+          return { date: chat.date, story: chat.story };
         });
-        this.imgsrcArray.push(dayImgArray);
+
+        chats.forEach((chat: any) => {
+          const dayImgArray: any = [];
+          chat.inputs.forEach((input: any) => {
+            if (input.type === 'sent' && input.image) {
+              dayImgArray.push(input.image);
+            }
+          });
+          this.imgsrcArray.push(dayImgArray);
+        });
       });
-      console.log('this.storiesArray: ', this.storiesArray);
-      console.log('this.imgsrcArray: ', this.imgsrcArray);
-    });
   }
 
   toggleSidenav() {
