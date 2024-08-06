@@ -1,0 +1,78 @@
+.bard-hello {
+  position: relative;
+  display: inline-block;
+  color: transparent;
+  background: -webkit-linear-gradient(
+    74deg,
+    #42f46e 0,
+    #317c57 9%,
+    #00ff95 20%,
+    #0bf817 24%,
+    #00af43 35%,
+    #4285f4 44%,
+    #18aaee 50%,
+    #369bb9 56%,
+    #131314 75%,
+    #131314 100%
+  );
+  font-size: 44px;
+  background-size: 400% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-inline: 15px;
+  margin-block: 20px;
+}
+
+.daily-stories-body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  color: #000;
+  background-color: white;
+}
+.main-daily {
+  height: 100%;
+  background-color: white;
+}
+
+.row {
+  width: 100%;
+  margin-bottom: 20px;
+  height: 50px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.041);
+  justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  gap: 10px;
+  color: rgb(37, 37, 37);
+
+  .img {
+    margin-bottom: 7px;
+    margin-left: 10px;
+    font-size: 17px;
+  }
+}
+.date-picker {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.inner-date-picker {
+  margin-top: 10px;
+  width: 250px;
+  border: 1px solid #55ad90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 15px;
+  height: 40px;
+  border-radius: 12px;
+  background-color: white;
+}

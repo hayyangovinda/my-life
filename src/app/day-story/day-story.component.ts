@@ -30,6 +30,12 @@ export class DayStoryComponent implements OnInit {
       this.date = dayChat.date;
       this.dayChatId = dayChat._id;
       this.dayPrompts = dayChat.inputs;
+
+      if (dayChat.story) {
+        this.generatedStory = dayChat.story;
+        return;
+      }
+
       this.dayPrompts = this.dayPrompts
         .filter((prompt: any) => prompt.type === 'sent')
         .map((prompt: any) => prompt.text)
@@ -39,10 +45,6 @@ export class DayStoryComponent implements OnInit {
 
       this.promptToSend = this.promptToSend + this.dayPrompts;
 
-      if (dayChat.story) {
-        this.generatedStory = dayChat.story;
-        return;
-      }
       this.httpService
         .generateStory({ prompt: this.promptToSend })
         .subscribe((response: any) => {
