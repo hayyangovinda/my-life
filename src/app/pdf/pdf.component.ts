@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnInit } from '@angular/core';
 import { SharingService } from '../services/sharing.service';
 import { DatePipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -11,26 +11,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './pdf.component.css',
 })
 export class PdfComponent implements OnInit {
-  imgSrcs: string[] = [];
+  @Input() imgSrcs: string[] = [];
+  @Input() date!: Date | undefined;
+  @Input() story!: string;
 
   sharingService = inject(SharingService);
-  date!: Date;
   destroyRef = inject(DestroyRef);
-  ngOnInit() {
-    this.sharingService.imgSrcs$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((srcs) => {
-        if (srcs) {
-          this.imgSrcs = srcs;
-        }
-      });
-
-    this.sharingService.date$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((date) => {
-        if (date) {
-          this.date = date;
-        }
-      });
-  }
+  ngOnInit() {}
 }

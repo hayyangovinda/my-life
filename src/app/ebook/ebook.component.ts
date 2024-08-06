@@ -18,7 +18,7 @@ import {
 } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { startOfYear, endOfYear, add } from 'date-fns';
+import { startOfYear, endOfYear, add, set } from 'date-fns';
 import { SharingService } from '../services/sharing.service';
 import { HttpService } from '../services/http.service';
 import jsPDF from 'jspdf';
@@ -58,11 +58,15 @@ export class EbookComponent implements OnInit {
   });
 
   httpService = inject(HttpService);
+  imgSrcs: string[] = [];
   storiesArray: {
     date: string;
     story: string;
   }[] = [];
+  story!: string;
   imgsrcArray: any[] = [];
+  date!: Date | undefined;
+
   ngOnInit() {
     this.httpService.getAllDayChats().subscribe((chats: any) => {
       console.log(chats);
@@ -88,10 +92,63 @@ export class EbookComponent implements OnInit {
     this.sharingService.toggleSidenav();
   }
 
+  // onGenerateClick() {
+  //   const taskInterventionPdf = this.pdf.nativeElement;
+  //   const pdf = new jsPDF('p', 'mm', 'a4');
+
+  //   const pageHeight = pdf.internal.pageSize.getHeight();
+
+  //   // Positioning the table
+  //   const x = 3;
+  //   const y = 0;
+  //   // Scale the table to fit the PDF width
+  //   const scale = 0.19;
+  //   const marginTopBottom = 28;
+  //   const marginLeftRight = 0;
+  //   const storiesArray = this.storiesArray;
+  //   const pdfTemplate = this.pdf.nativeElement;
+  //   const removeEmoji = this.removeEmojis;
+  //   const sharingService = this.sharingService;
+  //   const imgsrcArray = this.imgsrcArray;
+  //   let imgSrcs = this.imgSrcs;
+  //   function addTableCopyToPDF(pageIndex: number, doc: jsPDF) {
+  //     if (pageIndex >= storiesArray.length) {
+  //       pdf.save(`ebook.pdf`);
+  //       return;
+  //     }
+  //     pdfTemplate.querySelector('p').innerHTML = removeEmoji(
+  //       storiesArray[pageIndex].story
+  //     );
+  //     imgSrcs = imgsrcArray[pageIndex];
+  //     sharingService.updateDate(new Date(storiesArray[pageIndex].date));
+
+  //     pdf.html(pdfTemplate, {
+  //       callback: function (pdfInstance) {
+  //         if (pageIndex <= storiesArray.length - 1) {
+  //           pdfInstance.addPage('a4', 'p');
+  //         }
+  //         addTableCopyToPDF(pageIndex + 1, pdf);
+  //       },
+  //       x: x,
+  //       y: pageIndex * pageHeight + y,
+  //       html2canvas: { scale },
+  //     });
+  //   }
+  //   addTableCopyToPDF(0, pdf);
+
+  //   // doc.html(taskInterventionPdf, {
+  //   //   x, // Set x position
+  //   //   y, // Set y position
+  //   //   html2canvas: { scale },
+  //   //   callback: (doc) => {
+  //   //     doc.save('report');
+  //   //   },
+  //   // });
+  // }
+
   onGenerateClick() {
     const taskInterventionPdf = this.pdf.nativeElement;
     const pdf = new jsPDF('p', 'mm', 'a4');
-
     const pageHeight = pdf.internal.pageSize.getHeight();
 
     // Positioning the table
@@ -106,40 +163,37 @@ export class EbookComponent implements OnInit {
     const removeEmoji = this.removeEmojis;
     const sharingService = this.sharingService;
     const imgsrcArray = this.imgsrcArray;
-    function addTableCopyToPDF(pageIndex: number, doc: jsPDF) {
+
+    const addTableCopyToPDF = (pageIndex: number, doc: jsPDF) => {
       if (pageIndex >= storiesArray.length) {
         pdf.save(`ebook.pdf`);
+
         return;
       }
-      pdfTemplate.querySelector('p').innerHTML = removeEmoji(
-        storiesArray[pageIndex].story
-      );
-      sharingService.updateImgSrcs(imgsrcArray[pageIndex]);
-      sharingService.updateDate(new Date(storiesArray[pageIndex].date));
 
-      pdf.html(pdfTemplate, {
-        callback: function (pdfInstance) {
-          if (pageIndex <= storiesArray.length - 1) {
-            pdfInstance.addPage('a4', 'p');
-          }
-          addTableCopyToPDF(pageIndex + 1, pdf);
-        },
-        x: x,
-        y: pageIndex * pageHeight + y,
-        html2canvas: { scale },
-      });
-    }
+      this.story = removeEmoji(storiesArray[pageIndex].story);
+      this.imgSrcs = imgsrcArray[pageIndex];
+      this.date = new Date(storiesArray[pageIndex].date);
+
+      setTimeout(() => {
+        pdf.html(pdfTemplate, {
+          callback: (pdfInstance) => {
+            setTimeout(() => {
+              if (pageIndex <= storiesArray.length - 1) {
+                pdfInstance.addPage('a4', 'p');
+              }
+              addTableCopyToPDF(pageIndex + 1, pdf);
+            }, 500);
+          },
+          x: x,
+          y: pageIndex * pageHeight + y,
+          html2canvas: { scale },
+        });
+      }, 500);
+    };
     addTableCopyToPDF(0, pdf);
-
-    // doc.html(taskInterventionPdf, {
-    //   x, // Set x position
-    //   y, // Set y position
-    //   html2canvas: { scale },
-    //   callback: (doc) => {
-    //     doc.save('report');
-    //   },
-    // });
   }
+
   removeEmojis(input: string) {
     // Regular expression to match emojis
     const emojiAndSpecialCharsRegex = /[\p{C}\p{S}]/gu; // \p{C} for other characters, \p{S} for symbols

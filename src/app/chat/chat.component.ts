@@ -1,5 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -41,11 +42,12 @@ import { VoiceRecorder } from 'capacitor-voice-recorder';
 export class ChatComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
   inputs: string[] = [];
-  todayDate: Date = new Date('2024-07-20');
+  todayDate: Date = new Date('2024-08-03');
   newMessage: string = '';
   httpService = inject(HttpService);
   utilsService = inject(UtilsService);
   sharingService = inject(SharingService);
+  changeDetectorRef = inject(ChangeDetectorRef);
   todayChat: any;
   showDeleteIcon: boolean = false;
   deleteIconPosition: number | null = null;
@@ -263,10 +265,24 @@ export class ChatComponent implements OnInit {
       });
   }
   transcribeAudioBlob(formData: FormData) {
-    this.httpService.transcribeAudio(formData).subscribe((response: any) => {
-      console.log(response);
-      this.newMessage = JSON.stringify(response);
-    });
+    this.showLoaders = true;
+    this.showImageLoader = true;
+    this.changeDetectorRef.detectChanges();
+    this.httpService.transcribeAudio(formData).subscribe(
+      (response: any) => {
+        console.log(response);
+        this.newMessage = response.transcripts[0] + 'a';
+
+        this.showLoaders = false;
+        this.showImageLoader = false;
+        this.changeDetectorRef.detectChanges();
+      },
+      () => {
+        this.showLoaders = false;
+        this.showImageLoader = false;
+        this.changeDetectorRef.detectChanges();
+      }
+    );
   }
 
   openFileUploader(type: string) {

@@ -29,8 +29,8 @@ h4 {
   flex-wrap: wrap;
   gap: 25px;
   img {
-    width: 250px;
-    height: 250px;
+    width: 220px;
+    height: 220px;
     object-fit: cover;
   }
 }
