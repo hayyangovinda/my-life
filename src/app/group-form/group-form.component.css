@@ -54,7 +54,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
 .category-input-container.textarea {
@@ -116,8 +116,27 @@ textarea {
   margin-left: auto;
 }
 
+.back {
+  margin-top: 10px;
+  margin-left: 15px;
+}
+
 .btn-container {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+::ng-deep .emoji-mart-preview {
+  display: none;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
 }

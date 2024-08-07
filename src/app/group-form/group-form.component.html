@@ -1,16 +1,20 @@
-<main [formGroup]="categoryForm" class="form">
-  <!-- <img
-    (click)="onBackClick()"
-    src="../../../assets/back.svg"
-    alt=""
-    class="back"
-  /> -->
+<main [formGroup]="groupForm" class="form">
   <header>
     <div class="header-container">
       <img (click)="toggleSidenav()" src="../../assets/icons/menu.svg" alt="" />
       <h5>Create a Group</h5>
     </div>
   </header>
+  <svg
+    class="back"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24px"
+    viewBox="0 -960 960 960"
+    width="24px"
+    fill="#0A6847"
+  >
+    <path d="M360-200 80-480l280-280 56 56-183 184h647v80H233l184 184-57 56Z" />
+  </svg>
 
   <div class="category-input-container">
     <input
@@ -46,4 +50,18 @@
   <div class="btn-container">
     <button class="save" (click)="onSaveClick()">Save</button>
   </div>
+
+  <emoji-mart
+    *ngIf="showPicker"
+    (emojiClick)="emojiClick($event)"
+    [style]="{
+      position: 'absolute',
+      bottom: '0px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      'z-index': 10,
+      height: '51vh'
+    }"
+  ></emoji-mart>
+  <div (click)="onOverlayClick()" *ngIf="showPicker" class="overlay"></div>
 </main>
