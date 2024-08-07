@@ -1,0 +1,49 @@
+<main [formGroup]="categoryForm" class="form">
+  <!-- <img
+    (click)="onBackClick()"
+    src="../../../assets/back.svg"
+    alt=""
+    class="back"
+  /> -->
+  <header>
+    <div class="header-container">
+      <img (click)="toggleSidenav()" src="../../assets/icons/menu.svg" alt="" />
+      <h5>Create a Group</h5>
+    </div>
+  </header>
+
+  <div class="category-input-container">
+    <input
+      formControlName="icon"
+      readonly
+      (focus)="onIconFocus($event)"
+      class="row icon-input input"
+      type="text"
+      name=""
+      id=""
+      autocapitalize="words"
+      placeholder="Icon"
+    />
+    <input
+      formControlName="name"
+      placeholder="Category name"
+      type="text"
+      class="row input category-input"
+    />
+  </div>
+
+  <div class="category-input-container textarea">
+    <textarea
+      class="row input textarea-input"
+      name=""
+      id=""
+      placeholder="About the group .... "
+      formControlName="description"
+      cols="30"
+      rows="5"
+    ></textarea>
+  </div>
+  <div class="btn-container">
+    <button class="save" (click)="onSaveClick()">Save</button>
+  </div>
+</main>

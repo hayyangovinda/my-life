@@ -73,6 +73,19 @@ export const routes: Routes = [
   },
 
   {
+    path: 'groups',
+    loadComponent: () =>
+      import('./groups/groups.component').then((m) => m.GroupsComponent),
+  },
+
+  {
+    path: 'group-form',
+    loadComponent: () =>
+      import('./group-form/group-form.component').then(
+        (m) => m.GroupFormComponent
+      ),
+  },
+  {
     path: 'peep-profile',
     loadComponent: () =>
       import('./peep-profile/peep-profile.component').then(

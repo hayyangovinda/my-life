@@ -20,7 +20,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { RecordLoaderComponent } from '../record-loader/record-loader.component';
 import { LoaderComponent } from '../loader/loader.component';
-import { VoiceRecorder } from 'capacitor-voice-recorder';
 
 @Component({
   selector: 'app-chat',
@@ -71,9 +70,7 @@ export class ChatComponent implements OnInit {
     const todayDate = this.utilsService.formatDateToStartOfDayUTC(
       this.todayDate
     );
-    VoiceRecorder.requestAudioRecordingPermission().then((result) => {
-      console.log(result);
-    });
+
     this.setUpAudio();
     this.httpService.getDayChat(todayDate).subscribe((response: any) => {
       if (response.length) {
@@ -368,32 +365,5 @@ export class ChatComponent implements OnInit {
         inputs: this.todayChat.inputs,
       })
       .subscribe((response: any) => {});
-  }
-
-  startRecording() {
-    if (this.isRecording) {
-      return;
-    }
-    this.showLoaders = true;
-    this.showRecordingLoader = true;
-    this.isRecording = true;
-    VoiceRecorder.startRecording();
-  }
-
-  async stopRecording() {
-    if (!this.isRecording) {
-      return;
-    }
-    this.showLoaders = false;
-    this.showRecordingLoader = false;
-    this.isRecording = false;
-    VoiceRecorder.stopRecording().then(async (result) => {
-      console.log({ result });
-      if (result.value && result.value.recordDataBase64) {
-        const recordData = result.value.recordDataBase64;
-
-        this.transcribeAudio(recordData);
-      }
-    });
   }
 }
