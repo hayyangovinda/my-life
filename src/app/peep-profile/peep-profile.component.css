@@ -1,0 +1,23 @@
+.story-body {
+  color: black;
+  padding: 35px;
+  line-height: 30px;
+  padding-top: 22px;
+  text-align: justify;
+  font-size: 15px;
+}
+.main.story {
+  overflow-y: auto;
+}
+
+.header-story {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+h4 {
+  margin-top: 20px;
+  color: black;
+  text-align: center;
+}

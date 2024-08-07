@@ -47,4 +47,12 @@ export class SharingService {
   updateDate(date: Date) {
     this.date.next(date);
   }
+
+  peepToView = new BehaviorSubject<any | null>(null);
+
+  peepToView$ = this.peepToView.asObservable();
+
+  updatePeepToView(peep: any) {
+    this.peepToView.next(peep);
+  }
 }

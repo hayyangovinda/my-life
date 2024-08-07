@@ -312,7 +312,7 @@ export class ChatComponent implements OnInit {
         this.httpService.uploadImage(formData).subscribe(
           (response: any) => {
             const imageUrl = response.image.src;
-            this.messages.push({ text: '~img', type: 'sent', image: imageUrl });
+            this.messages.push({ text: '~', type: 'sent', image: imageUrl });
             this.todayChat.inputs = this.messages;
             this.httpService
               .updateDayChat(this.todayChat._id, {

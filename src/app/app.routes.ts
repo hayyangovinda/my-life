@@ -65,4 +65,18 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./ebook/ebook.component').then((m) => m.EbookComponent),
   },
+
+  {
+    path: 'people',
+    loadComponent: () =>
+      import('./people/people.component').then((m) => m.PeopleComponent),
+  },
+
+  {
+    path: 'peep-profile',
+    loadComponent: () =>
+      import('./peep-profile/peep-profile.component').then(
+        (m) => m.PeepProfileComponent
+      ),
+  },
 ];

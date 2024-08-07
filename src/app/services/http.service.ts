@@ -61,4 +61,24 @@ export class HttpService {
 
     return this.http.post(`${this.baseUrl}day-chat/image`, formdata);
   }
+
+  getAllPeople() {
+    return this.http.get(`${this.baseUrl}people`);
+  }
+
+  getPeopleById(id: string) {
+    return this.http.get(`${this.baseUrl}people/${id}`);
+  }
+
+  updatePeople(id: string, body: any) {
+    return this.http.patch(`${this.baseUrl}people/${id}`, body);
+  }
+
+  deletePeople(id: string) {
+    return this.http.delete(`${this.baseUrl}people/${id}`);
+  }
+
+  createPeopleRecord(body: any) {
+    return this.http.post(`${this.baseUrl}people`, body);
+  }
 }

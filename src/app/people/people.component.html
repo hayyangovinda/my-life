@@ -1,0 +1,18 @@
+<main>
+  <header>
+    <div class="header-container">
+      <img (click)="toggleSidenav()" src="../../assets/icons/menu.svg" alt="" />
+      <h5>People In My Life</h5>
+    </div>
+  </header>
+
+  <div class="daily-stories-body">
+    @for (peep of people; track $index) {
+    <div (click)="goToPeople(peep)" class="daily-stories-item row">
+      <div class="img">👤</div>
+
+      {{ peep.name }}
+    </div>
+    }
+  </div>
+</main>

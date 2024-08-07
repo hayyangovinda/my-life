@@ -1,0 +1,12 @@
+<main class="main story">
+  <header class="header-story">
+    <div class="header-container">
+      <img (click)="toggleSidenav()" src="../../assets/icons/menu.svg" alt="" />
+      <h5>My Life</h5>
+    </div>
+  </header>
+  <h4>{{ peep.name }}</h4>
+  <div contenteditable="true" id="story-body" class="story-body">
+    {{ peep.about }}
+  </div>
+</main>
