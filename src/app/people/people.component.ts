@@ -45,12 +45,6 @@ export class PeopleComponent implements OnInit {
     });
   }
 
-  getAllPeople() {
-    this.httpService.getAllPeople().subscribe((resp: any) => {
-      this.people = resp;
-      console.log(this.people);
-    });
-  }
   askGemini() {
     const prompt =
       'Base on the above context, return a list of people in the context,in the following format: [{name: "name", about: "about",mentions: [id,id,id]},...],where id is the dayId, and about is a long description(do not include ids in the descriptions,u can use emojis in descriptions) of the person and their relationship in regards to me , and a summary of our memories together,Do not return anything other than the array of objs. Return the array so that it can be assigned directly to a variable in js.';

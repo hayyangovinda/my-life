@@ -3,6 +3,8 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SharingService } from '../services/sharing.service';
 import { NgIf } from '@angular/common';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+import { Router } from '@angular/router';
+import { HttpService } from '../services/http.service';
 
 @Component({
   selector: 'app-group-form',
@@ -13,11 +15,9 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 })
 export class GroupFormComponent {
   showPicker = false;
-  onSaveClick() {
-    throw new Error('Method not implemented.');
-  }
   sharingService = inject(SharingService);
-
+  router = inject(Router);
+  httpService = inject(HttpService);
   groupForm = new FormGroup({
     icon: new FormControl(''),
     name: new FormControl(''),
@@ -28,13 +28,12 @@ export class GroupFormComponent {
     this.sharingService.toggleSidenav();
   }
 
-  categoryForm: any;
   onBackClick() {
-    throw new Error('Method not implemented.');
+    this.router.navigateByUrl('groups');
   }
 
   emojiClick(event: any) {
-    this.categoryForm.get('icon')?.setValue(event.emoji.native);
+    this.groupForm.get('icon')?.setValue(event.emoji.native);
     this.showPicker = false;
   }
 
@@ -45,5 +44,14 @@ export class GroupFormComponent {
   onIconFocus(event: any) {
     event.preventDefault();
     this.showPicker = true;
+  }
+
+  onSaveClick() {
+    console.log(this.groupForm.value);
+    const body = this.groupForm.value;
+    this.httpService.createGroup(body).subscribe((response: any) => {
+      console.log('success', response);
+      this.router.navigateByUrl('groups');
+    });
   }
 }

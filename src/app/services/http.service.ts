@@ -62,23 +62,23 @@ export class HttpService {
     return this.http.post(`${this.baseUrl}day-chat/image`, formdata);
   }
 
-  getAllPeople() {
-    return this.http.get(`${this.baseUrl}people`);
+  getAllGroups() {
+    return this.http.get(`${this.baseUrl}group`);
   }
 
-  getPeopleById(id: string) {
-    return this.http.get(`${this.baseUrl}people/${id}`);
+  getGroupById(id: string) {
+    return this.http.get(`${this.baseUrl}group/${id}`);
   }
 
-  updatePeople(id: string, body: any) {
-    return this.http.patch(`${this.baseUrl}people/${id}`, body);
+  updateGroup(id: string, body: any) {
+    return this.http.patch(`${this.baseUrl}group/${id}`, body);
   }
 
-  deletePeople(id: string) {
-    return this.http.delete(`${this.baseUrl}people/${id}`);
+  deleteGroup(id: string) {
+    return this.http.delete(`${this.baseUrl}group/${id}`);
   }
 
-  createPeopleRecord(body: any) {
-    return this.http.post(`${this.baseUrl}people`, body);
+  createGroup(body: any) {
+    return this.http.post(`${this.baseUrl}group`, body);
   }
 }
