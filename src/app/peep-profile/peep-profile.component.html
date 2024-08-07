@@ -9,4 +9,15 @@
   <div contenteditable="true" id="story-body" class="story-body">
     {{ peep.about }}
   </div>
+
+  <div class="mentions">
+    <span>Mentioned in :</span>
+    <div class="mention-container">
+      @for (mention of peep.mentions; track $index) {
+
+      <div class="mention-item">{{ mention }}</div>
+
+      }
+    </div>
+  </div>
 </main>

@@ -23,6 +23,12 @@ export class PeopleComponent implements OnInit {
   }
 
   ngOnInit() {
+    const storedPeople = this.getItemAndCheckDate('people');
+
+    if (storedPeople) {
+      this.people = storedPeople;
+      return;
+    }
     this.httpService.getAllDayChats().subscribe((resp: any) => {
       const responseInputs = resp.map((resp: any) => {
         const inputString = resp.inputs
@@ -34,9 +40,7 @@ export class PeopleComponent implements OnInit {
           inputs: inputString,
         };
       });
-
       this.context = JSON.stringify(responseInputs);
-
       this.askGemini();
     });
   }
@@ -58,11 +62,42 @@ export class PeopleComponent implements OnInit {
         console.log(response);
         const people = JSON.parse(response.generatedText);
         this.people = people;
+        this.saveItemWithDate('people', people);
       });
   }
 
   goToPeople(peep: any) {
     this.sharingService.updatePeepToView(peep);
     this.router.navigateByUrl('peep-profile');
+  }
+
+  getItemAndCheckDate(key: string) {
+    const itemStr = localStorage.getItem(key);
+    if (!itemStr) {
+      return null;
+    }
+
+    const item = JSON.parse(itemStr);
+    const savedDate = new Date(item.date);
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); // Normalize to midnight
+
+    // Check if the item was added today
+    if (savedDate.getTime() !== currentDate.getTime()) {
+      localStorage.removeItem(key);
+      return null;
+    }
+
+    return item.value;
+  }
+
+  saveItemWithDate(key: string, value: any) {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Normalize to midnight
+    const item = {
+      value: value,
+      date: now.getTime(),
+    };
+    localStorage.setItem(key, JSON.stringify(item));
   }
 }

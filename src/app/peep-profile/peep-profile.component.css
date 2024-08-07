@@ -21,3 +21,12 @@ h4 {
   color: black;
   text-align: center;
 }
+
+.mention-container {
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
