@@ -21,6 +21,40 @@ h4 {
   color: black;
   text-align: center;
 }
+.daily-stories-body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  color: #000;
+  background-color: whitesmoke;
+}
+.main-daily {
+  height: 100%;
+  background-color: whitesmoke;
+}
+
+.row {
+  width: 80%;
+  margin-bottom: 20px;
+  height: 50px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.041);
+  justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  gap: 10px;
+  color: rgb(37, 37, 37);
+
+  .img {
+    margin-bottom: 7px;
+    margin-left: 10px;
+    font-size: 17px;
+  }
+}
 
 .mention-container {
   color: black;
@@ -29,4 +63,11 @@ h4 {
   align-items: center;
   justify-content: center;
   margin-top: 20px;
+}
+
+.mention-title {
+  color: black;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 35px;
 }

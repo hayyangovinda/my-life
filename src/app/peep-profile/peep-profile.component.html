@@ -11,11 +11,15 @@
   </div>
 
   <div class="mentions">
-    <span>Mentioned in :</span>
+    <span class="mention-title">Mentioned in :</span>
     <div class="mention-container">
-      @for (mention of peep.mentions; track $index) {
+      @for (dayChat of peep.dayChats; track $index) {
 
-      <div class="mention-item">{{ mention }}</div>
+      <div (click)="goToStory(dayChat)" class="daily-stories-item row">
+        <div class="img">📖</div>
+
+        {{ dayChat.date | date : "EEEE, dd MMMM yyyy" }}
+      </div>
 
       }
     </div>
