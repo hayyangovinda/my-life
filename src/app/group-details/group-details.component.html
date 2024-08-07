@@ -1,0 +1,17 @@
+<main>
+  <header>
+    <div class="header-container">
+      <img (click)="toggleSidenav()" src="../../assets/icons/menu.svg" alt="" />
+      <h5>{{ group.name }}</h5>
+    </div>
+  </header>
+  <div class="daily-stories-body">
+    @for (result of results; track $index) {
+    <div (click)="goToResult(result)" class="daily-stories-item row">
+      <div class="img">📖</div>
+
+      {{ result.date | date : "EEEE, dd MMMM yyyy" }}
+    </div>
+    }
+  </div>
+</main>

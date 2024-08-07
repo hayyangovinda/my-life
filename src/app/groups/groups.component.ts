@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharingService } from '../services/sharing.service';
+import { HttpService } from '../services/http.service';
 
 @Component({
   selector: 'app-groups',
@@ -9,9 +10,22 @@ import { SharingService } from '../services/sharing.service';
   templateUrl: './groups.component.html',
   styleUrls: ['../chat/chat.component.css', './groups.component.css'],
 })
-export class GroupsComponent {
+export class GroupsComponent implements OnInit {
   router = inject(Router);
   sharingService = inject(SharingService);
+  httpService = inject(HttpService);
+  groups: any;
+
+  ngOnInit(): void {
+    this.getGroups();
+  }
+
+  getGroups() {
+    this.httpService.getAllGroups().subscribe((response: any) => {
+      this.groups = response;
+      console.log(this.groups);
+    });
+  }
 
   toggleSidenav() {
     this.sharingService.toggleSidenav();
@@ -19,10 +33,7 @@ export class GroupsComponent {
   onAddClick() {
     this.router.navigateByUrl('group-form');
   }
-  groups: any;
-  onBackClick() {
-    throw new Error('Method not implemented.');
-  }
+
   drop($event: Event) {
     throw new Error('Method not implemented.');
   }
@@ -31,5 +42,10 @@ export class GroupsComponent {
   }
   onDeleteClick($event: MouseEvent, _t5: any) {
     throw new Error('Method not implemented.');
+  }
+  onGroupClick(group: any) {
+    console.log(group);
+    this.sharingService.updateGroupToView(group);
+    this.router.navigateByUrl('group-details');
   }
 }

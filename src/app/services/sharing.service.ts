@@ -55,4 +55,13 @@ export class SharingService {
   updatePeepToView(peep: any) {
     this.peepToView.next(peep);
   }
+
+  groupToView = new BehaviorSubject<any | null>(null);
+
+  groupToView$ = this.groupToView.asObservable();
+
+
+  updateGroupToView(group: any) {
+    this.groupToView.next(group);
+  }
 }

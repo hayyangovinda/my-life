@@ -86,6 +86,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'group-details',
+    loadComponent: () =>
+      import('./group-details/group-details.component').then(
+        (m) => m.GroupDetailsComponent
+      ),
+  },
+  {
     path: 'peep-profile',
     loadComponent: () =>
       import('./peep-profile/peep-profile.component').then(
