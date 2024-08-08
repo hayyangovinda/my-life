@@ -182,6 +182,7 @@ body.Gold {
   );
   --header-shadow: rgba(255, 213, 26, 0.2) 0 15px 30px -5px;
   --header-border-color: linear-gradient(144deg, #b99b6b, #f3e142 50%, #ebac00);
+  --sent-text-color: #000;
 }
 
 body.Olive {
@@ -220,4 +221,5 @@ body.Sun {
   );
   --header-shadow: rgba(255, 217, 0, 0.2) 0 15px 30px -5px;
   --header-border-color: linear-gradient(144deg, #ffc436, #f3e142 50%, #ffc436);
+  --sent-text-color: #000;
 }

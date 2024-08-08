@@ -12,6 +12,7 @@ import { SharingService } from '../services/sharing.service';
 export class SidenavComponent {
   router = inject(Router);
   sharingService = inject(SharingService);
+  isDarkMode = localStorage.getItem('darkMode') === 'true';
 
   toggleSidenav() {
     this.sharingService.toggleSidenav();
@@ -27,8 +28,10 @@ export class SidenavComponent {
     this.sharingService.toggleDarkMode();
     if (document.body.classList.contains('dark')) {
       localStorage.setItem('darkMode', 'true');
+      this.isDarkMode = true;
     } else {
       localStorage.setItem('darkMode', 'false');
+      this.isDarkMode = false;
     }
   }
 }
