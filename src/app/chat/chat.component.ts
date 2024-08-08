@@ -72,6 +72,9 @@ export class ChatComponent implements OnInit {
   chatToView: any;
 
   ngOnInit(): void {
+    this.showLoaders = true;
+    this.showImageLoader = true;
+
     const todayDate = this.utilsService.formatDateToStartOfDayUTC(
       this.todayDate
     );
@@ -82,29 +85,47 @@ export class ChatComponent implements OnInit {
 
     console.log(this.dateParam);
     this.setUpAudio();
-    this.httpService.getDayChat(dateParam).subscribe((response: any) => {
-      if (response.length) {
-        this.todayChat = response[0];
+    this.httpService.getDayChat(dateParam).subscribe(
+      (response: any) => {
+        this.showLoaders = false;
+        this.showImageLoader = false;
+        if (response.length) {
+          this.todayChat = response[0];
 
-        this.messages = this.todayChat.inputs;
-        this.scrollChatToBottom();
-      } else {
-        this.httpService
-          .createDayChat({
-            date: todayDate,
-            inputs: [
-              {
-                text: "Hello! What's new today?",
-                type: 'received',
-                image: null,
+          this.messages = this.todayChat.inputs;
+          this.scrollChatToBottom();
+        } else {
+          this.httpService
+            .createDayChat({
+              date: todayDate,
+              inputs: [
+                {
+                  text: "Hello! What's new today?",
+                  type: 'received',
+                  image: null,
+                },
+              ],
+            })
+            .subscribe(
+              (response2: any) => {
+                this.showLoaders = false;
+                this.showImageLoader = false;
+                this.todayChat = response2;
               },
-            ],
-          })
-          .subscribe((response2: any) => {
-            this.todayChat = response2;
-          });
+              (error: any) => {
+                this.showLoaders = false;
+                this.showImageLoader = false;
+                console.log(error);
+              }
+            );
+        }
+      },
+      (error: any) => {
+        this.showLoaders = false;
+        this.showImageLoader = false;
+        console.log(error);
       }
-    });
+    );
   }
 
   autoGrow(event: Event) {
