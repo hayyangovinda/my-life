@@ -15,6 +15,7 @@ import {
   provideNativeDateAdapter,
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat-archive',
@@ -47,6 +48,7 @@ export class ChatArchiveComponent implements OnInit {
   });
   sharingService = inject(SharingService);
   httpService = inject(HttpService);
+  router = inject(Router);
   chats: any = [];
 
   ngOnInit(): void {
@@ -60,5 +62,7 @@ export class ChatArchiveComponent implements OnInit {
     this.sharingService.toggleSidenav();
   }
 
-  goToChat(chat: any) {}
+  goToChat(chat: any) {
+    this.router.navigateByUrl('home/' + chat.date);
+  }
 }

@@ -37,7 +37,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./chat/chat.component').then((m) => m.ChatComponent),
   },
-
+  {
+    path: 'home/:dateParam',
+    loadComponent: () =>
+      import('./chat/chat.component').then((m) => m.ChatComponent),
+  },
   {
     path: 'daily-stories',
     loadComponent: () =>

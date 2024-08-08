@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -6,6 +6,8 @@ import {
   EventEmitter,
   HostListener,
   inject,
+  Input,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
@@ -34,12 +36,14 @@ import { LoaderComponent } from '../loader/loader.component';
     MatIconModule,
     RecordLoaderComponent,
     LoaderComponent,
+    DatePipe,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
 export class ChatComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
+  @Input('dateParam') dateParam!: string;
   inputs: string[] = [];
   todayDate: Date = new Date('2024-08-03');
   newMessage: string = '';
@@ -65,14 +69,20 @@ export class ChatComponent implements OnInit {
   showRecordingLoader: boolean = false;
   showImageLoader: boolean = false;
   showLoaders: boolean = false;
+  chatToView: any;
 
   ngOnInit(): void {
     const todayDate = this.utilsService.formatDateToStartOfDayUTC(
       this.todayDate
     );
+    let dateParam = todayDate;
+    if (this.dateParam) {
+      dateParam = this.dateParam;
+    }
 
+    console.log(this.dateParam);
     this.setUpAudio();
-    this.httpService.getDayChat(todayDate).subscribe((response: any) => {
+    this.httpService.getDayChat(dateParam).subscribe((response: any) => {
       if (response.length) {
         this.todayChat = response[0];
 
