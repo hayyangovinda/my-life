@@ -18,7 +18,7 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 
-  --primary-color: #eb3678;
+  --primary-color: #55ad92;
   --main-bg-color: whitesmoke;
   --secondary-bg-color: white;
   --header-shadow: rgba(65, 252, 180, 0.2) 0 15px 30px -5px;
@@ -49,4 +49,175 @@ body.dark {
   --black-text-color: #fff;
   --title-color: #b3b3b3;
   --row-text-color: #dadada;
+}
+
+body.Original {
+  --primary-color: #55ad92;
+
+  --header-shadow: rgba(65, 252, 180, 0.2) 0 15px 30px -5px;
+  --header-border-color: linear-gradient(144deg, #40ff70, #42f3c7 50%, #00eb9d);
+  --text-gradient: -webkit-linear-gradient(
+    74deg,
+    #42f46e 0,
+    #317c57 9%,
+    #00ff95 20%,
+    #0bf817 24%,
+    #00af43 35%,
+    #4285f4 44%,
+    #18aaee 50%,
+    #369bb9 56%,
+    #131314 75%,
+    #131314 100%
+  );
+}
+
+body.Candy {
+  --primary-color: #f5004f;
+  --text-gradient: -webkit-linear-gradient(
+    74deg,
+    #f44242 0,
+    #7c3131 9%,
+    #ff0000 20%,
+    #f83a0b 24%,
+    #af0000 35%,
+    #f44242 44%,
+    #ee1818 50%,
+    #b94536 56%,
+    #141313 75%,
+    #141313 100%
+  );
+  --header-shadow: rgba(252, 71, 65, 0.2) 0 15px 30px -5px;
+  --header-border-color: linear-gradient(144deg, #ff6640, #f34842 50%, #eb0000);
+}
+body.Sky {
+  --primary-color: #19a7ce;
+  --text-gradient: -webkit-linear-gradient(
+    74deg,
+    #0084ff 0,
+    #42d8f3 9%,
+    #006eeb 20%,
+    #04a8c5 24%,
+    #005aaf 35%,
+    #4285f4 44%,
+    #03608b 50%,
+    #369bb9 56%,
+    #131314 75%,
+    #131314 100%
+  );
+  --header-shadow: rgba(0, 204, 255, 0.2) 0 15px 30px -5px;
+  --header-border-color: linear-gradient(144deg, #0077ff, #4289f3 50%, #00bceb);
+}
+
+body.Sunset {
+  --primary-color: #eb5b00;
+  --text-gradient: -webkit-linear-gradient(
+    74deg,
+    #f4ad42 0,
+    #7c7131 9%,
+    #ff9100 20%,
+    #f8890b 24%,
+    #af8000 35%,
+    #f44242 44%,
+    #ee8a18 50%,
+    #b98b36 56%,
+    #141313 75%,
+    #141313 100%
+  );
+  --header-shadow: rgba(235, 161, 0, 0.2) 0 15px 30px -5px;
+  --header-border-color: linear-gradient(144deg, #ffbc40, #f3ac42 50%, #eba100);
+}
+
+body.Tropical {
+  --primary-color: #14c38e;
+  --text-gradient: -webkit-linear-gradient(
+    74deg,
+    #00ff6a 0,
+    #42d8f3 9%,
+    #04aa73 20%,
+    #3afdbc 24%,
+    #34c297 35%,
+    #42f4b9 44%,
+    #038b6e 50%,
+    #36b947 56%,
+    #131314 75%,
+    #131314 100%
+  );
+  --header-shadow: rgba(0, 255, 170, 0.2) 0 15px 30px -5px;
+  --header-border-color: linear-gradient(144deg, #00ff88, #42f3b8 50%, #00eba5);
+}
+
+body.Coral {
+  --primary-color: #ff6969;
+  --text-gradient: -webkit-linear-gradient(
+    74deg,
+    #f46642 0,
+    #ff854c 9%,
+    #ff4800 20%,
+    #ff5050 24%,
+    #db6334 35%,
+    #f44242 44%,
+    #ee1818 50%,
+    #b94536 56%,
+    #141313 75%,
+    #141313 100%
+  );
+  --header-shadow: rgba(252, 109, 65, 0.2) 0 15px 30px -5px;
+  --header-border-color: linear-gradient(144deg, #ff4d40, #f34842 50%, #eb0000);
+}
+
+body.Gold {
+  --primary-color: #dfb325;
+  --text-gradient: -webkit-linear-gradient(
+    74deg,
+    #b99b6b 0,
+    #daba54 9%,
+    #ffd769 20%,
+    #dfb325 24%,
+    #af9500 35%,
+    #f4ad42 44%,
+    #8b6b03 50%,
+    #b9a136 56%,
+    #131314 75%,
+    #131314 100%
+  );
+  --header-shadow: rgba(255, 213, 26, 0.2) 0 15px 30px -5px;
+  --header-border-color: linear-gradient(144deg, #b99b6b, #f3e142 50%, #ebac00);
+}
+
+body.Olive {
+  --primary-color: #829460;
+  --text-gradient: -webkit-linear-gradient(
+    74deg,
+    #829460 0,
+    #b9c85f 9%,
+    #a0b34c 20%,
+    #8a9b4a 24%,
+    #6b728e 35%,
+    #829460 44%,
+    #3a4b5c 50%,
+    #369bb9 56%,
+    #131314 75%,
+    #131314 100%
+  );
+  --header-shadow: hsla(81, 21%, 48%, 0.2) 0 15px 30px -5px;
+  --header-border-color: linear-gradient(144deg, #829460, #44884d 50%, #8aaf44);
+}
+
+body.Sun {
+  --primary-color: #ffc436;
+  --text-gradient: -webkit-linear-gradient(
+    74deg,
+    #ffc436 0,
+    #dacd54 9%,
+    #ffd26a 20%,
+    #f0c63c 24%,
+    #ffc436 35%,
+    #dab900 44%,
+    #ffc436 50%,
+    #dacb00 56%,
+    #131314 75%,
+    #131314 100%
+  );
+  --header-shadow: rgba(255, 217, 0, 0.2) 0 15px 30px -5px;
+  --header-border-color: linear-gradient(144deg, #ffc436, #f3e142 50%, #ffc436);
 }

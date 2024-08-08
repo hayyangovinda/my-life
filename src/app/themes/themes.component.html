@@ -16,4 +16,19 @@
       <h5>Themes</h5>
     </div>
   </header>
+  <div class="daily-stories-body">
+    @for (theme of themes; track $index) {
+    <div
+      (click)="onThemeSelected(theme)"
+      class="daily-stories-item row"
+      [style]="{ border: '1px solid ' + theme.color }"
+    >
+      <div
+        class="color-circle"
+        [style]="{ backgroundColor: theme.color }"
+      ></div>
+      <span [style]="{ color: theme.color }">{{ theme.name }}</span>
+    </div>
+    }
+  </div>
 </main>

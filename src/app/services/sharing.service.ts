@@ -66,4 +66,14 @@ export class SharingService {
   toggleDarkMode() {
     document.body.classList.toggle('dark');
   }
+
+  private currentTheme: string | null = null;
+
+  setTheme(theme: string) {
+    if (this.currentTheme) {
+      document.body.classList.remove(this.currentTheme);
+    }
+    document.body.classList.add(theme);
+    this.currentTheme = theme;
+  }
 }
