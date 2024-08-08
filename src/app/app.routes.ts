@@ -100,6 +100,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'chat-archive',
+    loadComponent: () =>
+      import('./chat-archive/chat-archive.component').then(
+        (m) => m.ChatArchiveComponent
+      ),
+  },
+  {
     path: 'themes',
     loadComponent: () =>
       import('./themes/themes.component').then((m) => m.ThemesComponent),
