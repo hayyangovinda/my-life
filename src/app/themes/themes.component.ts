@@ -24,6 +24,7 @@ export class ThemesComponent {
 
   onThemeSelected(theme: any) {
     this.sharingService.setTheme(theme.name);
+    localStorage.setItem('theme', theme.name);
   }
 
   toggleSidenav() {

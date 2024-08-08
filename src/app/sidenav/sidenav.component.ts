@@ -25,5 +25,10 @@ export class SidenavComponent {
 
   toggleDarkMode() {
     this.sharingService.toggleDarkMode();
+    if (document.body.classList.contains('dark')) {
+      localStorage.setItem('darkMode', 'true');
+    } else {
+      localStorage.setItem('darkMode', 'false');
+    }
   }
 }
