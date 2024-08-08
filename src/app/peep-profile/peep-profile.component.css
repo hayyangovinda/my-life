@@ -1,5 +1,5 @@
 .story-body {
-  color: black;
+  color: var(--black-text-color);
   padding: 35px;
   line-height: 30px;
   padding-top: 22px;
@@ -8,6 +8,7 @@
 }
 .main.story {
   overflow-y: auto;
+  background-color: var(--main-bg-color);
 }
 
 .header-story {
@@ -18,7 +19,7 @@
 
 h4 {
   margin-top: 20px;
-  color: black;
+  color: var(--black-text-color);
   text-align: center;
 }
 .daily-stories-body {
@@ -57,7 +58,7 @@ h4 {
 }
 
 .mention-container {
-  color: black;
+  color: var(--black-text-color);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -66,7 +67,7 @@ h4 {
 }
 
 .mention-title {
-  color: black;
+  color: var(--black-text-color);
   font-size: 15px;
   font-weight: 700;
   padding: 35px;

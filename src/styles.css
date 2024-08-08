@@ -18,7 +18,7 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 
-  --primary-color: #55ad92;
+  --primary-color: #eb3678;
   --main-bg-color: whitesmoke;
   --secondary-bg-color: white;
   --header-shadow: rgba(65, 252, 180, 0.2) 0 15px 30px -5px;
@@ -44,7 +44,7 @@ body {
 }
 
 body.dark {
-  --main-bg-color: #303030;
+  --main-bg-color: #212121;
   --secondary-bg-color: #121212;
   --black-text-color: #fff;
   --title-color: #b3b3b3;

@@ -6,7 +6,7 @@ main {
   font-size: 18px;
   font-weight: 400;
   background-color: var(--secondary-bg-color);
-  color: black;
+  color: var(--black-text-color);
 }
 
 p {

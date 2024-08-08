@@ -26,7 +26,7 @@
   font-size: 17px;
   margin-left: 5px;
   font-weight: 600;
-  color: #474747;
+  color: var(--title-color);
 }
 
 .add-box {

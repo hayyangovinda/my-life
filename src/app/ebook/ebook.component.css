@@ -188,7 +188,7 @@ strong {
 }
 
 h4 {
-  color: black;
+  color: var(--black-text-color);
   font-size: 18px;
   text-align: center;
   margin-top: 20px;

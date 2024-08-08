@@ -1,5 +1,5 @@
 .story-body {
-  color: black;
+  color: var(--black-text-color);
   padding: 35px;
   line-height: 30px;
   padding-top: 22px;
@@ -18,6 +18,6 @@
 
 h4 {
   margin-top: 20px;
-  color: black;
+  color: var(--black-text-color);
   text-align: center;
 }
