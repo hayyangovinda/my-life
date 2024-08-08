@@ -99,4 +99,9 @@ export const routes: Routes = [
         (m) => m.PeepProfileComponent
       ),
   },
+  {
+    path: 'themes',
+    loadComponent: () =>
+      import('./themes/themes.component').then((m) => m.ThemesComponent),
+  },
 ];
