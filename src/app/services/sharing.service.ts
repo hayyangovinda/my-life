@@ -60,8 +60,10 @@ export class SharingService {
 
   groupToView$ = this.groupToView.asObservable();
 
-
   updateGroupToView(group: any) {
     this.groupToView.next(group);
+  }
+  toggleDarkMode() {
+    document.body.classList.toggle('dark');
   }
 }

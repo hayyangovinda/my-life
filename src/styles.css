@@ -17,4 +17,36 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+
+  --primary-color: #55ad92;
+  --main-bg-color: whitesmoke;
+  --secondary-bg-color: white;
+  --header-shadow: rgba(65, 252, 180, 0.2) 0 15px 30px -5px;
+  --header-border-color: linear-gradient(144deg, #40ff70, #42f3c7 50%, #00eb9d);
+  --text-gradient: -webkit-linear-gradient(
+    74deg,
+    #42f46e 0,
+    #317c57 9%,
+    #00ff95 20%,
+    #0bf817 24%,
+    #00af43 35%,
+    #4285f4 44%,
+    #18aaee 50%,
+    #369bb9 56%,
+    #131314 75%,
+    #131314 100%
+  );
+
+  --black-text-color: #000;
+  --title-color: #4d4d4d;
+  --sent-text-color: #fff;
+  --row-text-color: #252525;
+}
+
+body.dark {
+  --main-bg-color: #303030;
+  --secondary-bg-color: #121212;
+  --black-text-color: #fff;
+  --title-color: #b3b3b3;
+  --row-text-color: #dadada;
 }

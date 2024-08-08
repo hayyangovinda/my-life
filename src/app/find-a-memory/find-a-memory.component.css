@@ -2,19 +2,8 @@
   position: relative;
   display: inline-block;
   color: transparent;
-  background: -webkit-linear-gradient(
-    74deg,
-    #42f46e 0,
-    #317c57 9%,
-    #00ff95 20%,
-    #0bf817 24%,
-    #00af43 35%,
-    #4285f4 44%,
-    #18aaee 50%,
-    #369bb9 56%,
-    #131314 75%,
-    #131314 100%
-  );
+  background: var(--text-gradient);
+
   font-size: 44px;
   background-size: 400% 100%;
   background-clip: text;
@@ -30,19 +19,19 @@
   width: 100%;
   height: 100%;
   padding: 20px;
-  color: #000;
-  background-color: white;
+  color: var(--black-text-color);
+  background-color: var(--secondary-bg-color);
 }
 .main-daily {
   height: 100%;
-  background-color: white;
+  background-color: var(--secondary-bg-color);
 }
 
 .row {
   width: 100%;
   margin-bottom: 20px;
   height: 50px;
-  background-color: rgb(255, 255, 255);
+  background-color: var(--secondary-bg-color);
   border-radius: 10px;
   box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.041);
   justify-content: flex-start;
@@ -50,7 +39,7 @@
   align-items: center;
   font-size: 15px;
   gap: 10px;
-  color: rgb(37, 37, 37);
+  color: var(--row-text-color);
 
   .img {
     margin-bottom: 7px;
@@ -67,12 +56,12 @@
 .inner-date-picker {
   margin-top: 10px;
   width: 250px;
-  border: 1px solid #55ad90;
+  border: 1px solid var(--primary-color);
   display: flex;
   align-items: center;
   justify-content: center;
   padding-left: 15px;
   height: 40px;
   border-radius: 12px;
-  background-color: white;
+  background-color: var(--secondary-bg-color);
 }

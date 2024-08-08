@@ -22,4 +22,8 @@ export class SidenavComponent {
     localStorage.removeItem('mylife-token');
     this.router.navigateByUrl('login');
   }
+
+  toggleDarkMode() {
+    this.sharingService.toggleDarkMode();
+  }
 }
