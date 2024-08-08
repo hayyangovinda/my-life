@@ -16,4 +16,37 @@
       <h5>Chat Archive</h5>
     </div>
   </header>
+
+  <div class="date-picker">
+    <div class="inner-date-picker">
+      <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+        <input
+          readonly
+          matStartDate
+          formControlName="start"
+          placeholder="Start date"
+        />
+        <input
+          readonly
+          matEndDate
+          formControlName="end"
+          placeholder="End date"
+        />
+      </mat-date-range-input>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker touchUi="true" #picker></mat-date-range-picker>
+    </div>
+  </div>
+  <div class="daily-stories-body">
+    @for (chat of chats; track $index) {
+    <div (click)="goToChat(chat)" class="daily-stories-item row">
+      <div class="img">📖</div>
+
+      {{ chat.date | date : "EEEE, dd MMMM yyyy" }}
+    </div>
+    }
+  </div>
 </main>
