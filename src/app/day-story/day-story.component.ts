@@ -27,6 +27,8 @@ export class DayStoryComponent implements OnInit {
   }
   @Input() storyId: string | null = null;
 
+  showLoaders = false;
+
   ngOnInit() {
     this.sharingService.comingFrom$.subscribe((from: any) => {
       this.comingFrom = from;
@@ -79,6 +81,8 @@ export class DayStoryComponent implements OnInit {
       this.router.navigateByUrl('daily-stories');
     } else if (this.comingFrom === 'group') {
       this.router.navigateByUrl('groups');
+    } else if (this.comingFrom === 'peep') {
+      this.router.navigateByUrl('peep-profile');
     }
   }
 }
