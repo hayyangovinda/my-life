@@ -63,6 +63,7 @@ export class ChatArchiveComponent implements OnInit {
   }
 
   goToChat(chat: any) {
+    // this.sharingService.comingFrom.next('chat-archive');
     this.router.navigateByUrl('home/' + chat.date);
   }
 }
