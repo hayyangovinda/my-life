@@ -3,13 +3,10 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
   HostListener,
   inject,
   Input,
-  OnDestroy,
   OnInit,
-  Output,
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -22,6 +19,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { RecordLoaderComponent } from '../record-loader/record-loader.component';
 import { LoaderComponent } from '../loader/loader.component';
+import { VoiceRecorder } from 'capacitor-voice-recorder';
+import { format, set } from 'date-fns';
 
 @Component({
   selector: 'app-chat',
@@ -84,7 +83,11 @@ export class ChatComponent implements OnInit {
     }
 
     console.log(this.dateParam);
-    this.setUpAudio();
+    // this.setUpAudio();
+
+    VoiceRecorder.requestAudioRecordingPermission().then((result) => {
+      console.log(result);
+    });
     this.httpService.getDayChat(dateParam).subscribe(
       (response: any) => {
         this.showLoaders = false;
@@ -396,5 +399,53 @@ export class ChatComponent implements OnInit {
         inputs: this.todayChat.inputs,
       })
       .subscribe((response: any) => {});
+  }
+
+  startRecording() {
+    if (this.isRecording) {
+      return;
+    }
+    this.showLoaders = true;
+    this.showRecordingLoader = true;
+    this.isRecording = true;
+    VoiceRecorder.startRecording();
+  }
+
+  async stopRecording() {
+    if (!this.isRecording) {
+      return;
+    }
+    this.showLoaders = false;
+    this.showRecordingLoader = false;
+    this.isRecording = false;
+    VoiceRecorder.stopRecording().then(async (result) => {
+      console.log({ result });
+      if (result.value && result.value.recordDataBase64) {
+        const recordData = result.value.recordDataBase64;
+        const mimeType = result.value.mimeType;
+        const file = this.base64ToFile(recordData, 'audio.aac', mimeType);
+        // this.transcribeAudio(recordData);
+        const formData = new FormData();
+        formData.append('audio', file);
+        this.transcribeAudioBlob(formData);
+        console.log(file);
+      }
+    });
+  }
+  base64ToFile(base64: string, filename: string, mimeType: string): File {
+    const blob = this.base64ToBlob(base64, mimeType);
+    return new File([blob], filename, { type: mimeType });
+  }
+
+  base64ToBlob(base64: string, mimeType: string): Blob {
+    const binaryString = atob(base64); // Remove the data URL prefix if present
+    const binaryLen = binaryString.length;
+    const bytes = new Uint8Array(binaryLen);
+
+    for (let i = 0; i < binaryLen; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    return new Blob([bytes], { type: mimeType });
   }
 }

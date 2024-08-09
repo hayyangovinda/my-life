@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { SharingService } from './services/sharing.service';
 import { SidenavComponent } from './sidenav/sidenav.component';
 
@@ -17,8 +17,17 @@ export class AppComponent implements OnInit {
   isSidenavOpen = false;
   selectedTheme = localStorage.getItem('theme');
   isDarkMode = localStorage.getItem('darkMode') === 'true' ? true : false;
-
+  hasToken = false;
+  router = inject(Router);
   ngOnInit(): void {
+    const token = localStorage.getItem('mylife-token');
+    if (token) {
+      this.hasToken = true;
+      this.router.navigateByUrl('home');
+    } else {
+      this.hasToken = false;
+      this.router.navigateByUrl('login');
+    }
     console.log('isDarkMode', this.isDarkMode);
     if (!this.selectedTheme) {
       this.selectedTheme = 'Original';

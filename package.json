@@ -24,6 +24,7 @@
     "@capacitor/android": "^6.1.0",
     "@capacitor/core": "^6.1.0",
     "@ctrl/ngx-emoji-mart": "^9.2.0",
+    "capacitor-voice-recorder": "^5.0.0",
     "convert-audio": "^1.0.1",
     "date-fns": "^3.6.0",
     "jspdf": "^2.5.1",
