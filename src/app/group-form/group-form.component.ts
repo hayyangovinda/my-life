@@ -5,11 +5,12 @@ import { NgIf } from '@angular/common';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { Router } from '@angular/router';
 import { HttpService } from '../services/http.service';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-group-form',
   standalone: true,
-  imports: [ReactiveFormsModule, PickerComponent, NgIf],
+  imports: [ReactiveFormsModule, PickerComponent, NgIf, LoaderComponent],
   templateUrl: './group-form.component.html',
   styleUrls: ['../chat/chat.component.css', './group-form.component.css'],
 })
@@ -23,6 +24,7 @@ export class GroupFormComponent {
     name: new FormControl(''),
     description: new FormControl(''),
   });
+  showLoaders = false;
 
   toggleSidenav() {
     this.sharingService.toggleSidenav();
@@ -47,11 +49,18 @@ export class GroupFormComponent {
   }
 
   onSaveClick() {
-    console.log(this.groupForm.value);
     const body = this.groupForm.value;
-    this.httpService.createGroup(body).subscribe((response: any) => {
-      console.log('success', response);
-      this.router.navigateByUrl('groups');
-    });
+    this.showLoaders = true;
+    this.httpService.createGroup(body).subscribe(
+      (response: any) => {
+        console.log('success', response);
+        this.router.navigateByUrl('groups');
+        this.showLoaders = false;
+      },
+      (error: any) => {
+        this.showLoaders = false;
+        console.log(error);
+      }
+    );
   }
 }

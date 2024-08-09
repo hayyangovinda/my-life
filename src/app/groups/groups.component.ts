@@ -1,13 +1,14 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharingService } from '../services/sharing.service';
 import { HttpService } from '../services/http.service';
 import { LoaderComponent } from '../loader/loader.component';
+import { LongPressDirective } from '../directives/long-press.directive';
 
 @Component({
   selector: 'app-groups',
   standalone: true,
-  imports: [LoaderComponent],
+  imports: [LoaderComponent, LongPressDirective],
   templateUrl: './groups.component.html',
   styleUrls: ['../chat/chat.component.css', './groups.component.css'],
 })
@@ -17,10 +18,21 @@ export class GroupsComponent implements OnInit {
   httpService = inject(HttpService);
   groups: any;
   showLoaders = false;
-
+  showUtilsIcons = false;
   ngOnInit(): void {
     this.showLoaders = true;
     this.getGroups();
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (
+      !target.classList.contains('delete-icon') &&
+      !target.classList.contains('sent')
+    ) {
+      this.showUtilsIcons = false;
+    }
   }
 
   getGroups() {
@@ -47,15 +59,33 @@ export class GroupsComponent implements OnInit {
   drop($event: Event) {
     throw new Error('Method not implemented.');
   }
-  onEditClick(_t5: any) {
-    throw new Error('Method not implemented.');
+  onEditClick(event: any, group: any) {
+    event.stopPropagation();
+    console.log('edit', group);
   }
-  onDeleteClick($event: MouseEvent, _t5: any) {
-    throw new Error('Method not implemented.');
+  onDeleteClick(event: any, group: any) {
+    event.stopPropagation();
+    localStorage.removeItem(group._id);
+    this.showLoaders = true;
+    this.httpService.deleteGroup(group._id).subscribe(
+      (response: any) => {
+        this.getGroups();
+        console.log(response);
+      },
+      (error: any) => {
+        this.showLoaders = false;
+        console.log(error);
+      }
+    );
   }
   onGroupClick(group: any) {
     console.log(group);
     this.sharingService.updateGroupToView(group);
     this.router.navigateByUrl('group-details');
+  }
+
+  onLongPress(event: any, group: any) {
+    console.log(group);
+    this.showUtilsIcons = true;
   }
 }

@@ -78,3 +78,10 @@
   ></emoji-mart>
   <div (click)="onOverlayClick()" *ngIf="showPicker" class="overlay"></div>
 </main>
+
+@if (showLoaders) {
+
+<div class="loader">
+  <app-loader></app-loader>
+</div>
+}
