@@ -44,4 +44,8 @@ export class ForgotPasswordComponent {
         }
       );
   }
+
+  onBackClick() {
+    this.router.navigateByUrl('login');
+  }
 }

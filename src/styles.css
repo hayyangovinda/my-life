@@ -41,6 +41,7 @@ body {
   --title-color: #4d4d4d;
   --sent-text-color: #fff;
   --row-text-color: #252525;
+  --info-text-color: #393939;
 }
 
 body.dark {
@@ -49,6 +50,7 @@ body.dark {
   --black-text-color: #fff;
   --title-color: #b3b3b3;
   --row-text-color: #dadada;
+  --info-text-color: #dddddd;
 }
 
 body.Original {

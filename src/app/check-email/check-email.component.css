@@ -63,7 +63,7 @@ img {
 .resend {
   margin-top: 10px;
   font-size: 15px;
-  color: #01204e;
+  color: var(--info-text-color);
 }
 
 .back {
@@ -72,7 +72,7 @@ img {
   align-items: center;
   gap: 10px;
   font-size: 15px;
-  color: #01204e;
+  color: var(--info-text-color);
   margin-bottom: 20px;
   align-self: center;
   img {

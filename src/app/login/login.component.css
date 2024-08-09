@@ -39,7 +39,7 @@ img {
     width: 23px;
     height: 23px;
     position: absolute;
-    left: 29px;
+    left: 16px;
     top: 35%;
     transform: translateY(-50%);
   }
@@ -48,7 +48,7 @@ img {
     width: 22px;
     height: 22px;
     top: 42%;
-    left: 31px;
+    left: 17px;
   }
 }
 
@@ -57,7 +57,7 @@ img {
 .or {
   font-size: 14px;
   font-weight: 600;
-  color: #01204e;
+  color: var(--info-text-color);
 }
 
 .sign-up {
@@ -74,7 +74,7 @@ img {
 }
 
 .login-btn {
-  width: 71%;
+  width: 80%;
   min-height: 60px;
   border: 1px solid var(--primary-color);
   background-color: var(--primary-color);
@@ -96,8 +96,8 @@ img {
 .password-wrapper svg.eye {
   position: absolute;
   margin: 0;
-  top: 25%;
-  right: 28px !important;
+  top: 29%;
+  right: 20px !important;
   width: 20px;
   height: 20px;
   cursor: pointer;
@@ -123,10 +123,10 @@ h4.title {
   margin-top: 30px;
   margin-bottom: 20px;
   font-size: 25px;
-  color: #01204e;
+  color: var(--info-text-color);;
 } */
 .row {
-  width: 90%;
+  width: 100%;
   margin: 10px;
   margin-top: 0;
   margin-bottom: 20px;
