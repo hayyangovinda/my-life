@@ -179,7 +179,7 @@ export class EbookComponent implements OnInit {
         pdf.html(pdfTemplate, {
           callback: (pdfInstance) => {
             setTimeout(() => {
-              if (pageIndex <= storiesArray.length - 1) {
+              if (pageIndex < storiesArray.length - 1) {
                 pdfInstance.addPage('a4', 'p');
               }
               addTableCopyToPDF(pageIndex + 1, pdf);
