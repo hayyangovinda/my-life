@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { SharingService } from '../services/sharing.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-themes',
@@ -9,7 +10,9 @@ import { SharingService } from '../services/sharing.service';
   styleUrls: ['../chat/chat.component.css', './themes.component.css'],
 })
 export class ThemesComponent {
+  toastr = inject(ToastrService);
   sharingService = inject(SharingService);
+  changeDetectorRef = inject(ChangeDetectorRef);
   themes = [
     { name: 'Original', color: '#55ad92' },
     { name: 'Candy', color: '#F5004F' },
@@ -25,6 +28,9 @@ export class ThemesComponent {
   onThemeSelected(theme: any) {
     this.sharingService.setTheme(theme.name);
     localStorage.setItem('theme', theme.name);
+
+    this.toastr.success('Theme changed', '', { timeOut: 2500 });
+    this.changeDetectorRef.detectChanges();
   }
 
   toggleSidenav() {
