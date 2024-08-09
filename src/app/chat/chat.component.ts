@@ -302,7 +302,7 @@ export class ChatComponent implements OnInit {
     this.httpService.transcribeAudio(formData).subscribe(
       (response: any) => {
         console.log(response);
-        this.newMessage = response.transcripts[0] + 'a';
+        this.newMessage = response.transcripts[0];
 
         this.showLoaders = false;
         this.showImageLoader = false;

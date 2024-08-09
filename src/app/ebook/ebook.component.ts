@@ -23,6 +23,7 @@ import { SharingService } from '../services/sharing.service';
 import { HttpService } from '../services/http.service';
 import jsPDF from 'jspdf';
 import { PdfComponent } from '../pdf/pdf.component';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-ebook',
@@ -34,6 +35,7 @@ import { PdfComponent } from '../pdf/pdf.component';
     FormsModule,
     ReactiveFormsModule,
     PdfComponent,
+    LoaderComponent,
   ],
   templateUrl: './ebook.component.html',
   styleUrls: [
@@ -56,6 +58,7 @@ export class EbookComponent implements OnInit {
     start: new FormControl<Date | null>(this.firstDayOfYear),
     end: new FormControl<Date | null>(this.lastDayOfYear),
   });
+  showLoaders = false;
 
   httpService = inject(HttpService);
   imgSrcs: string[] = [];
@@ -68,9 +71,9 @@ export class EbookComponent implements OnInit {
   date!: Date | undefined;
 
   ngOnInit() {
-    this.httpService
-      .getAllDayChats({ sorted: true })
-      .subscribe((chats: any) => {
+    this.showLoaders = true;
+    this.httpService.getAllDayChats({ sorted: true }).subscribe(
+      (chats: any) => {
         console.log(chats);
         this.storiesArray = chats.map((chat: any) => {
           return { date: chat.date, story: chat.story };
@@ -85,68 +88,22 @@ export class EbookComponent implements OnInit {
           });
           this.imgsrcArray.push(dayImgArray);
         });
-      });
+        this.showLoaders = false;
+      },
+      (error) => {
+        console.log(error);
+        this.showLoaders = false;
+      }
+    );
   }
 
   toggleSidenav() {
     this.sharingService.toggleSidenav();
   }
 
-  // onGenerateClick() {
-  //   const taskInterventionPdf = this.pdf.nativeElement;
-  //   const pdf = new jsPDF('p', 'mm', 'a4');
-
-  //   const pageHeight = pdf.internal.pageSize.getHeight();
-
-  //   // Positioning the table
-  //   const x = 3;
-  //   const y = 0;
-  //   // Scale the table to fit the PDF width
-  //   const scale = 0.19;
-  //   const marginTopBottom = 28;
-  //   const marginLeftRight = 0;
-  //   const storiesArray = this.storiesArray;
-  //   const pdfTemplate = this.pdf.nativeElement;
-  //   const removeEmoji = this.removeEmojis;
-  //   const sharingService = this.sharingService;
-  //   const imgsrcArray = this.imgsrcArray;
-  //   let imgSrcs = this.imgSrcs;
-  //   function addTableCopyToPDF(pageIndex: number, doc: jsPDF) {
-  //     if (pageIndex >= storiesArray.length) {
-  //       pdf.save(`ebook.pdf`);
-  //       return;
-  //     }
-  //     pdfTemplate.querySelector('p').innerHTML = removeEmoji(
-  //       storiesArray[pageIndex].story
-  //     );
-  //     imgSrcs = imgsrcArray[pageIndex];
-  //     sharingService.updateDate(new Date(storiesArray[pageIndex].date));
-
-  //     pdf.html(pdfTemplate, {
-  //       callback: function (pdfInstance) {
-  //         if (pageIndex <= storiesArray.length - 1) {
-  //           pdfInstance.addPage('a4', 'p');
-  //         }
-  //         addTableCopyToPDF(pageIndex + 1, pdf);
-  //       },
-  //       x: x,
-  //       y: pageIndex * pageHeight + y,
-  //       html2canvas: { scale },
-  //     });
-  //   }
-  //   addTableCopyToPDF(0, pdf);
-
-  //   // doc.html(taskInterventionPdf, {
-  //   //   x, // Set x position
-  //   //   y, // Set y position
-  //   //   html2canvas: { scale },
-  //   //   callback: (doc) => {
-  //   //     doc.save('report');
-  //   //   },
-  //   // });
-  // }
-
   onGenerateClick() {
+    this.showLoaders = true;
+
     const taskInterventionPdf = this.pdf.nativeElement;
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pageHeight = pdf.internal.pageSize.getHeight();
@@ -167,6 +124,7 @@ export class EbookComponent implements OnInit {
     const addTableCopyToPDF = (pageIndex: number, doc: jsPDF) => {
       if (pageIndex >= storiesArray.length) {
         pdf.save(`ebook.pdf`);
+        this.showLoaders = false;
 
         return;
       }

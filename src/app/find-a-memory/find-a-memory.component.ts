@@ -9,6 +9,7 @@ import { LongPressDirective } from '../directives/long-press.directive';
 import { LoaderComponent } from '../loader/loader.component';
 import { RecordLoaderComponent } from '../record-loader/record-loader.component';
 import { HttpService } from '../services/http.service';
+import { VoiceRecorder } from 'capacitor-voice-recorder';
 import { Router } from '@angular/router';
 
 @Component({
@@ -46,7 +47,9 @@ export class FindAMemoryComponent implements OnInit {
   contextArray: any = [];
   stories: any = [];
   ngOnInit(): void {
-    this.setUpAudio();
+    VoiceRecorder.requestAudioRecordingPermission().then((result) => {
+      console.log(result);
+    });
     this.httpService.getAllDayChats().subscribe((response: any) => {
       this.contextArray = response.map((resp: any) => {
         return { date: resp.date, story: resp.story, id: resp._id };
@@ -55,7 +58,9 @@ export class FindAMemoryComponent implements OnInit {
     });
   }
   sendMessage() {
-    console.log(this.newMessage);
+    if (this.newMessage.trim() === '') {
+      return;
+    }
     this.showLoaders = true;
     this.showImageLoader = true;
     this.changeDetectorRef.detectChanges();
@@ -108,56 +113,6 @@ export class FindAMemoryComponent implements OnInit {
     }
   }
 
-  toggleRecording() {
-    if (!this.canRecord) {
-      return;
-    }
-    if (this.isRecording) {
-      this.recorder?.stop();
-      this.showLoaders = false;
-      this.showRecordingLoader = false;
-
-      this.isRecording = false;
-    } else {
-      this.showLoaders = true;
-      this.showRecordingLoader = true;
-      this.recorder?.start();
-
-      this.isRecording = true;
-    }
-  }
-
-  setUpAudio() {
-    console.log('navigator', navigator.mediaDevices);
-
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-        this.recorder = new MediaRecorder(stream);
-        this.recorder.ondataavailable = (e) => {
-          this.chunks.push(e.data);
-        };
-
-        this.recorder.onstop = () => {
-          const blob = new Blob(this.chunks, { type: 'audio/aiff' });
-          this.chunks = [];
-          const audioUrl = URL.createObjectURL(blob);
-
-          this.selectedFile = new File([blob], 'recording.wav', {
-            type: 'audio/wav',
-          });
-          console.log('recording-stop');
-          console.log(this.selectedFile);
-          const formData = new FormData();
-          formData.append('audio', this.selectedFile);
-          // this.downloadFile(this.selectedFile);
-          this.transcribeAudioBlob(formData);
-        };
-      });
-    }
-
-    this.canRecord = true;
-  }
-
   transcribeAudioBlob(formData: FormData) {
     this.showLoaders = true;
     this.showImageLoader = true;
@@ -165,7 +120,7 @@ export class FindAMemoryComponent implements OnInit {
     this.httpService.transcribeAudio(formData).subscribe(
       (response: any) => {
         console.log(response);
-        this.newMessage = response.transcripts[0] + 'a';
+        this.newMessage = response.transcripts[0];
 
         this.showLoaders = false;
         this.showImageLoader = false;
@@ -177,5 +132,53 @@ export class FindAMemoryComponent implements OnInit {
         this.changeDetectorRef.detectChanges();
       }
     );
+  }
+
+  startRecording() {
+    if (this.isRecording) {
+      return;
+    }
+    this.showLoaders = true;
+    this.showRecordingLoader = true;
+    this.isRecording = true;
+    VoiceRecorder.startRecording();
+  }
+
+  async stopRecording() {
+    if (!this.isRecording) {
+      return;
+    }
+    this.showLoaders = false;
+    this.showRecordingLoader = false;
+    this.isRecording = false;
+    VoiceRecorder.stopRecording().then(async (result) => {
+      console.log({ result });
+      if (result.value && result.value.recordDataBase64) {
+        const recordData = result.value.recordDataBase64;
+        const mimeType = result.value.mimeType;
+        const file = this.base64ToFile(recordData, 'audio.aac', mimeType);
+        // this.transcribeAudio(recordData);
+        const formData = new FormData();
+        formData.append('audio', file);
+        this.transcribeAudioBlob(formData);
+        console.log(file);
+      }
+    });
+  }
+  base64ToFile(base64: string, filename: string, mimeType: string): File {
+    const blob = this.base64ToBlob(base64, mimeType);
+    return new File([blob], filename, { type: mimeType });
+  }
+
+  base64ToBlob(base64: string, mimeType: string): Blob {
+    const binaryString = atob(base64); // Remove the data URL prefix if present
+    const binaryLen = binaryString.length;
+    const bytes = new Uint8Array(binaryLen);
+
+    for (let i = 0; i < binaryLen; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    return new Blob([bytes], { type: mimeType });
   }
 }
