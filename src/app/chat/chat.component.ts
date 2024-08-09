@@ -21,6 +21,7 @@ import { RecordLoaderComponent } from '../record-loader/record-loader.component'
 import { LoaderComponent } from '../loader/loader.component';
 import { VoiceRecorder } from 'capacitor-voice-recorder';
 import { format, set } from 'date-fns';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat',
@@ -46,6 +47,7 @@ export class ChatComponent implements OnInit {
   inputs: string[] = [];
   todayDate: Date = new Date('2024-08-03');
   newMessage: string = '';
+  router = inject(Router);
   httpService = inject(HttpService);
   utilsService = inject(UtilsService);
   sharingService = inject(SharingService);
@@ -129,6 +131,10 @@ export class ChatComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  onBackClick() {
+    this.router.navigateByUrl('chat-archive');
   }
 
   autoGrow(event: Event) {

@@ -16,6 +16,7 @@ import {
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
 import { Router } from '@angular/router';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-chat-archive',
@@ -26,6 +27,7 @@ import { Router } from '@angular/router';
     MatDatepickerModule,
     FormsModule,
     ReactiveFormsModule,
+    LoaderComponent,
   ],
   templateUrl: './chat-archive.component.html',
   styleUrls: [
@@ -50,12 +52,20 @@ export class ChatArchiveComponent implements OnInit {
   httpService = inject(HttpService);
   router = inject(Router);
   chats: any = [];
+  showLoaders: boolean = false;
 
   ngOnInit(): void {
-    this.httpService.getAllDayChats().subscribe((response: any) => {
-      this.chats = response;
-      console.log(this.chats);
-    });
+    this.showLoaders = true;
+    this.httpService.getAllDayChats().subscribe(
+      (response: any) => {
+        this.chats = response;
+        this.showLoaders = false;
+        console.log(this.chats);
+      },
+      () => {
+        this.showLoaders = false;
+      }
+    );
   }
 
   toggleSidenav() {

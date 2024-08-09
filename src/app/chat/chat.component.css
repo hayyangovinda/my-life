@@ -45,6 +45,9 @@ footer {
   gap: 10px;
   font-size: 0.9rem;
 }
+.chat-body-back {
+  height: calc(100% - 139px);
+}
 
 .message {
   margin-bottom: 10px;
@@ -183,4 +186,8 @@ h5 {
 .back {
   margin-top: 15px;
   margin-left: 15px;
+}
+
+.back-chat {
+  position: sticky;
 }
