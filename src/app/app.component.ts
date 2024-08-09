@@ -21,13 +21,13 @@ export class AppComponent implements OnInit {
   router = inject(Router);
   ngOnInit(): void {
     const token = localStorage.getItem('mylife-token');
-    if (token) {
-      this.hasToken = true;
-      this.router.navigateByUrl('home');
-    } else {
-      this.hasToken = false;
-      this.router.navigateByUrl('login');
-    }
+    // if (token) {
+    //   this.hasToken = true;
+    //   this.router.navigateByUrl('home');
+    // } else {
+    //   this.hasToken = false;
+    //   this.router.navigateByUrl('login');
+    // }
     console.log('isDarkMode', this.isDarkMode);
     if (!this.selectedTheme) {
       this.selectedTheme = 'Original';

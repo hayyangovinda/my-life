@@ -11,6 +11,9 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['../chat/chat.component.css', './day-story.component.css'],
 })
 export class DayStoryComponent implements OnInit {
+  onBackClick() {
+    throw new Error('Method not implemented.');
+  }
   sharingService = inject(SharingService);
   generatedStory: string = '';
   dayPrompts: any;

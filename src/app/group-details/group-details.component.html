@@ -18,6 +18,19 @@
     </div>
   </header>
   <div class="daily-stories-body">
+    <svg
+      (click)="onBackClick()"
+      class="back back-group"
+      xmlns="http://www.w3.org/2000/svg"
+      height="24px"
+      viewBox="0 -960 960 960"
+      width="24px"
+      fill="var(--info-text-color)"
+    >
+      <path
+        d="M360-200 80-480l280-280 56 56-183 184h647v80H233l184 184-57 56Z"
+      />
+    </svg>
     @for (result of results; track $index) {
     <div (click)="goToResult(result)" class="daily-stories-item row">
       <div class="img">📖</div>
@@ -27,3 +40,10 @@
     }
   </div>
 </main>
+
+@if (showLoaders) {
+
+<div class="loader">
+  <app-loader></app-loader>
+</div>
+}

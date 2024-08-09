@@ -2,11 +2,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharingService } from '../services/sharing.service';
 import { HttpService } from '../services/http.service';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-groups',
   standalone: true,
-  imports: [],
+  imports: [LoaderComponent],
   templateUrl: './groups.component.html',
   styleUrls: ['../chat/chat.component.css', './groups.component.css'],
 })
@@ -15,16 +16,25 @@ export class GroupsComponent implements OnInit {
   sharingService = inject(SharingService);
   httpService = inject(HttpService);
   groups: any;
+  showLoaders = false;
 
   ngOnInit(): void {
+    this.showLoaders = true;
     this.getGroups();
   }
 
   getGroups() {
-    this.httpService.getAllGroups().subscribe((response: any) => {
-      this.groups = response;
-      console.log(this.groups);
-    });
+    this.httpService.getAllGroups().subscribe(
+      (response: any) => {
+        this.groups = response;
+        console.log(this.groups);
+        this.showLoaders = false;
+      },
+      (error: any) => {
+        this.showLoaders = false;
+        console.log(error);
+      }
+    );
   }
 
   toggleSidenav() {

@@ -16,6 +16,7 @@ import {
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { startOfYear, endOfYear } from 'date-fns';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-daily-stories',
@@ -26,6 +27,7 @@ import { startOfYear, endOfYear } from 'date-fns';
     MatDatepickerModule,
     FormsModule,
     ReactiveFormsModule,
+    LoaderComponent,
   ],
 
   templateUrl: './daily-stories.component.html',
@@ -47,12 +49,21 @@ export class DailyStoriesComponent {
     start: new FormControl<Date | null>(this.firstDayOfYear),
     end: new FormControl<Date | null>(this.lastDayOfYear),
   });
+  showLoaders = false;
 
   ngOnInit(): void {
-    this.httpService.getAllDayChats().subscribe((response: any) => {
-      console.log(response);
-      this.stories = response;
-    });
+    this.showLoaders = true;
+    this.httpService.getAllDayChats().subscribe(
+      (response: any) => {
+        console.log(response);
+        this.showLoaders = false;
+        this.stories = response;
+      },
+      (error: any) => {
+        this.showLoaders = false;
+        console.log(error);
+      }
+    );
   }
 
   toggleSidenav() {

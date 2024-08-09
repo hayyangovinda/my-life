@@ -179,3 +179,8 @@ h5 {
   align-items: center;
   justify-content: center;
 }
+
+.back {
+  margin-top: 15px;
+  margin-left: 15px;
+}

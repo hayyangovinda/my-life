@@ -3,11 +3,12 @@ import { SharingService } from '../services/sharing.service';
 import { HttpService } from '../services/http.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-group-details',
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe, LoaderComponent],
   templateUrl: './group-details.component.html',
   styleUrls: ['../chat/chat.component.css', './group-details.component.css'],
 })
@@ -19,6 +20,8 @@ export class GroupDetailsComponent implements OnInit {
   context = '';
   results: any = [];
   dayChats: any = [];
+  showLoaders = false;
+
   ngOnInit(): void {
     this.sharingService.groupToView$.subscribe((group: any) => {
       this.group = group;
@@ -36,21 +39,29 @@ export class GroupDetailsComponent implements OnInit {
   }
 
   getContext() {
-    this.httpService.getAllDayChats().subscribe((resp: any) => {
-      this.dayChats = resp;
-      const responseInputs = resp.map((resp: any) => {
-        const inputString = resp.inputs
-          .filter((input: any) => input.type === 'sent')
-          .map((input: any) => input.text)
-          .join(',');
-        return {
-          dayId: resp._id,
-          inputs: inputString,
-        };
-      });
-      this.context = JSON.stringify(responseInputs);
-      this.askGemini();
-    });
+    this.showLoaders = true;
+    this.httpService.getAllDayChats().subscribe(
+      (resp: any) => {
+        this.showLoaders = false;
+        this.dayChats = resp;
+        const responseInputs = resp.map((resp: any) => {
+          const inputString = resp.inputs
+            .filter((input: any) => input.type === 'sent')
+            .map((input: any) => input.text)
+            .join(',');
+          return {
+            dayId: resp._id,
+            inputs: inputString,
+          };
+        });
+        this.context = JSON.stringify(responseInputs);
+        this.askGemini();
+      },
+      (error: any) => {
+        this.showLoaders = false;
+        console.log(error);
+      }
+    );
   }
 
   askGemini() {
@@ -65,9 +76,8 @@ export class GroupDetailsComponent implements OnInit {
       this.group.description +
       prompt;
 
-    this.httpService
-      .generateStory({ prompt: promptToSend })
-      .subscribe((response: any) => {
+    this.httpService.generateStory({ prompt: promptToSend }).subscribe(
+      (response: any) => {
         console.log(response);
         const dayIdArray = JSON.parse(response.generatedText);
 
@@ -78,7 +88,13 @@ export class GroupDetailsComponent implements OnInit {
           }
         });
         this.saveItemWithDate(this.group._id, this.results);
-      });
+        this.showLoaders = false;
+      },
+      (error: any) => {
+        this.showLoaders = false;
+        console.log(error);
+      }
+    );
   }
 
   saveItemWithDate(key: string, value: any) {
@@ -114,5 +130,9 @@ export class GroupDetailsComponent implements OnInit {
   goToResult(story: any) {
     this.sharingService.updateDayToGenerate(story);
     this.router.navigateByUrl('story/' + story._id);
+  }
+
+  onBackClick() {
+    this.router.navigateByUrl('groups');
   }
 }
