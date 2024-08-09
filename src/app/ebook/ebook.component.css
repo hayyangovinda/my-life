@@ -1,5 +1,5 @@
 main {
-  height: 100vh;
+  height: 100%;
   overflow-y: hidden;
 }
 
@@ -192,4 +192,15 @@ h4 {
   font-size: 18px;
   text-align: center;
   margin-top: 20px;
+}
+
+.pocket {
+  max-height: 2px;
+  overflow: hidden;
+  position: relative;
+
+  div {
+    position: absolute;
+    top: -1500px;
+  }
 }
