@@ -2,6 +2,7 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { SharingService } from '../services/sharing.service';
 import { HttpService } from '../services/http.service';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-day-story',
@@ -11,24 +12,25 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['../chat/chat.component.css', './day-story.component.css'],
 })
 export class DayStoryComponent implements OnInit {
-  onBackClick() {
-    throw new Error('Method not implemented.');
-  }
   sharingService = inject(SharingService);
+  router = inject(Router);
   generatedStory: string = '';
   dayPrompts: any;
   httpService = inject(HttpService);
   date: any;
   dayChatId: any;
-
+  comingFrom: string = '';
   promptToSend =
     'rewrite the following as an entry in a diary/journal in a proper tone,  write it in the first person,u can use emojis, write good easy simple english.give me only the story,no title no date, no other details ,do not invent your own story,base iton the given prompts \n\n';
   toggleSidenav() {
     this.sharingService.toggleSidenav();
   }
-  @Input() storyId: string = '';
+  @Input() storyId: string | null = null;
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.sharingService.comingFrom$.subscribe((from: any) => {
+      this.comingFrom = from;
+    });
     this.sharingService.dayToGenerate$.subscribe((dayChat: any) => {
       this.date = dayChat.date;
       this.dayChatId = dayChat._id;
@@ -70,5 +72,13 @@ export class DayStoryComponent implements OnInit {
       .subscribe((response: any) => {
         console.log(response);
       });
+  }
+
+  onBackClick() {
+    if (this.comingFrom === 'stories') {
+      this.router.navigateByUrl('daily-stories');
+    } else if (this.comingFrom === 'group') {
+      this.router.navigateByUrl('groups');
+    }
   }
 }

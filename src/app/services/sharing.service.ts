@@ -76,4 +76,20 @@ export class SharingService {
     document.body.classList.add(theme);
     this.currentTheme = theme;
   }
+
+  groupToEdit = new BehaviorSubject<any | null>(null);
+
+  groupToEdit$ = this.groupToEdit.asObservable();
+
+  updateGroupToEdit(group: any) {
+    this.groupToEdit.next(group);
+  }
+
+  comingFrom = new BehaviorSubject<any | null>(null);
+
+  comingFrom$ = this.comingFrom.asObservable();
+
+  updateComingFrom(from: any) {
+    this.comingFrom.next(from);
+  }
 }

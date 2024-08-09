@@ -42,7 +42,6 @@ export class GroupDetailsComponent implements OnInit {
     this.showLoaders = true;
     this.httpService.getAllDayChats().subscribe(
       (resp: any) => {
-        this.showLoaders = false;
         this.dayChats = resp;
         const responseInputs = resp.map((resp: any) => {
           const inputString = resp.inputs
@@ -129,6 +128,7 @@ export class GroupDetailsComponent implements OnInit {
 
   goToResult(story: any) {
     this.sharingService.updateDayToGenerate(story);
+    this.sharingService.updateComingFrom('group');
     this.router.navigateByUrl('story/' + story._id);
   }
 

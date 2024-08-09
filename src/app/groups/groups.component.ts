@@ -61,7 +61,8 @@ export class GroupsComponent implements OnInit {
   }
   onEditClick(event: any, group: any) {
     event.stopPropagation();
-    console.log('edit', group);
+    this.sharingService.updateGroupToEdit(group);
+    this.router.navigateByUrl('group-form');
   }
   onDeleteClick(event: any, group: any) {
     event.stopPropagation();
