@@ -20,11 +20,12 @@
   height: 100%;
   padding: 20px;
   color: var(--black-text-color);
-  background-color: var(--secondary-bg-color);
+  background-color: var(--main-bg-color);
+  position: relative;
 }
 .main-daily {
   height: 100%;
-  background-color: var(--secondary-bg-color);
+  background-color: var(--main-bg-color);
 }
 
 .row {
@@ -64,4 +65,25 @@
   height: 40px;
   border-radius: 12px;
   background-color: var(--secondary-bg-color);
+}
+
+main {
+  background-color: var(--main-bg-color);
+}
+
+textarea {
+  background-color: var(--main-bg-color);
+}
+
+.clear {
+  position: absolute;
+  right: 8px;
+  top: -16px;
+  width: 30px;
+  height: 30px;
+}
+
+.resultFor {
+  font-size: 14px;
+  margin-bottom: 20px;
 }

@@ -46,16 +46,43 @@ export class FindAMemoryComponent implements OnInit {
   contextString: string = '';
   contextArray: any = [];
   stories: any = [];
+  resultFor = '';
   ngOnInit(): void {
     VoiceRecorder.requestAudioRecordingPermission().then((result) => {
       console.log(result);
     });
-    this.httpService.getAllDayChats().subscribe((response: any) => {
-      this.contextArray = response.map((resp: any) => {
-        return { date: resp.date, story: resp.story, id: resp._id };
-      });
-      this.contextString = JSON.stringify(this.contextArray);
-    });
+
+    const memoryFound = localStorage.getItem('memoryfound');
+    if (memoryFound) {
+      this.stories = JSON.parse(memoryFound);
+    }
+    const resultFor = localStorage.getItem('resulFor');
+    if (resultFor) {
+      this.resultFor = JSON.parse(resultFor);
+    }
+    this.httpService.getAllDayChats().subscribe(
+      (resp: any) => {
+        this.contextArray = resp.map((resp: any) => {
+          return { date: resp.date, story: resp.story, id: resp._id };
+        });
+
+        const responseInputs = resp.map((resp: any) => {
+          const inputString = resp.inputs
+            .filter((input: any) => input.type === 'sent')
+            .map((input: any) => input.text)
+            .join(',');
+          return {
+            date: resp.date,
+            dayId: resp._id,
+            inputs: inputString,
+          };
+        });
+        this.contextString = JSON.stringify(responseInputs);
+      },
+      (error: any) => {
+        this.showLoaders = false;
+      }
+    );
   }
   sendMessage() {
     if (this.newMessage.trim() === '') {
@@ -67,6 +94,8 @@ export class FindAMemoryComponent implements OnInit {
     const prompt =
       'Base on the above context, answer the following question, by returning only only only(not even /n,or whitespaces) an array of id or ids of the day chats that are relevant to the question. If no relevant day chats are found, return an empty array. Do not invent your own story, base it on the given prompts. Do not return anything other than the array of ids. Return the array so that it can be assigned directly to a variable in js. \n \n' +
       this.newMessage;
+
+    const resultFor = this.newMessage;
 
     const promptToSend = this.contextString + prompt;
     this.newMessage = '';
@@ -83,6 +112,9 @@ export class FindAMemoryComponent implements OnInit {
           console.log('dayChat', dayChat);
           this.stories.push(dayChat);
         });
+        localStorage.setItem('memoryfound', JSON.stringify(this.stories));
+        this.resultFor = resultFor;
+        localStorage.setItem('resulFor', JSON.stringify(this.resultFor));
         this.showLoaders = false;
         this.showImageLoader = false;
         this.changeDetectorRef.detectChanges();
@@ -100,6 +132,7 @@ export class FindAMemoryComponent implements OnInit {
   }
 
   goToStory(story: any) {
+    this.sharingService.updateComingFrom('find-a-memory');
     this.sharingService.updateDayToGenerate(story);
     this.router.navigateByUrl('story/' + story.id);
   }
@@ -180,5 +213,16 @@ export class FindAMemoryComponent implements OnInit {
     }
 
     return new Blob([bytes], { type: mimeType });
+  }
+
+  onClearClick() {
+    this.stories = [];
+    this.newMessage = '';
+    this.showLoaders = false;
+    this.showImageLoader = false;
+    this.resultFor = '';
+    localStorage.removeItem('resulFor');
+    localStorage.removeItem('memoryfound');
+    this.changeDetectorRef.detectChanges();
   }
 }

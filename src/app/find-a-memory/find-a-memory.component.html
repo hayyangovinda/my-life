@@ -21,7 +21,15 @@
   <h4 class="bard-hello">What memory would you like to find?</h4>
 
   <div class="daily-stories-body">
-    @for (story of stories; track $index) {
+    @if (stories.length > 0) {
+    <h6 class="resultFor">Results for '{{ resultFor }}' :</h6>
+    <img
+      (click)="onClearClick()"
+      class="clear"
+      src="../../assets/icons/delete.png"
+      alt=""
+    />
+    } @for (story of stories; track $index) {
     <div (click)="goToStory(story)" class="daily-stories-item row">
       <div class="img">📖</div>
 

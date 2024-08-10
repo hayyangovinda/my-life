@@ -92,9 +92,11 @@ export class DayStoryComponent implements OnInit {
     if (this.comingFrom === 'stories') {
       this.router.navigateByUrl('daily-stories');
     } else if (this.comingFrom === 'group') {
-      this.router.navigateByUrl('groups');
+      this.router.navigateByUrl('group-details');
     } else if (this.comingFrom === 'peep') {
       this.router.navigateByUrl('peep-profile');
+    } else if (this.comingFrom === 'find-a-memory') {
+      this.router.navigateByUrl('find-a-memory');
     }
   }
 }
