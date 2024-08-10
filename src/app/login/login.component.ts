@@ -6,9 +6,15 @@ import {
   ViewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpService } from '../services/http.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -24,11 +30,11 @@ export class LoginComponent {
   destroyRef = inject(DestroyRef);
 
   loginForm = new FormGroup({
-    email: new FormControl(''),
-    password: new FormControl(''),
+    email: new FormControl('', Validators.email),
+    password: new FormControl('', Validators.minLength(6)),
   });
   passwordShowIcon = false;
-
+  toastrService = inject(ToastrService);
   ngOnInit(): void {}
 
   private decodeToken(token: string) {
@@ -40,14 +46,32 @@ export class LoginComponent {
   }
 
   onLoginClick() {
+    const isValidEmail = this.loginForm.controls.email.valid;
+    const isValidPassword = this.loginForm.controls.password.valid;
+
+    if (!isValidEmail || !isValidPassword) {
+      if (!isValidEmail) {
+        this.toastrService.error('Please enter a valid email address');
+      }
+      if (!isValidPassword) {
+        this.toastrService.error('Password must be at least 6 characters');
+      }
+      return;
+    }
     this.httpService
       .login(this.loginForm.value)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((data: any) => {
-        localStorage.setItem('mylife-token', data.token);
-        console.log(data.token);
-        this.router.navigateByUrl('home');
-      });
+      .subscribe(
+        (data: any) => {
+          localStorage.setItem('mylife-token', data.token);
+          console.log(data.token);
+          this.router.navigateByUrl('home');
+        },
+        (error: any) => {
+          console.log(error.error.error);
+          this.toastrService.error(error.error.error);
+        }
+      );
   }
 
   onForgotPwClick() {

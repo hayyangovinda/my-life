@@ -6,10 +6,16 @@ import {
   ViewChild,
 } from '@angular/core';
 import { HttpService } from '../services/http.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { SharingService } from '../services/sharing.service';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -28,35 +34,56 @@ export class RegisterComponent {
   router = inject(Router);
 
   registerForm = new FormGroup({
-    email: new FormControl(''),
-    password: new FormControl(''),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
   });
   passwordShowIcon = false;
+  toastService = inject(ToastrService);
 
   onLoginClick() {
     this.router.navigateByUrl('login');
   }
 
   onRegisterClick() {
-    console.log(this.registerForm.value);
+    const isValidEmail = this.registerForm.controls.email.valid;
+    const isValidPassword = this.registerForm.controls.password.valid;
+
+    if (!isValidEmail || !isValidPassword) {
+      if (!isValidEmail) {
+        this.toastService.error('Please enter a valid email address');
+      }
+      if (!isValidPassword) {
+        this.toastService.error('Password must be at least 6 characters');
+      }
+      return;
+    }
 
     this.httpService
       .register(this.registerForm.value)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((data: any) => {
-        localStorage.setItem('mylife-token', data.token);
+      .subscribe(
+        (data: any) => {
+          localStorage.setItem('mylife-token', data.token);
 
-        const email = this.registerForm.get('email')?.value;
-        this.httpService
-          .sendVerificationEmail({ email })
-          .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe((data: any) => {
-            console.log(data);
-            this.router.navigateByUrl('check-email');
-          });
+          const email = this.registerForm.get('email')?.value;
+          this.httpService
+            .sendVerificationEmail({ email })
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((data: any) => {
+              console.log(data);
+              this.router.navigateByUrl('check-email');
+            });
 
-        this.sharingService.updateUserEmail(email as string);
-      });
+          this.sharingService.updateUserEmail(email as string);
+        },
+        (error: any) => {
+          console.log(error.error.message);
+          this.toastService.error(error.error.message);
+        }
+      );
   }
 
   togglePasswordVisibility() {
