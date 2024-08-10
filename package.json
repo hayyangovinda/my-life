@@ -28,6 +28,7 @@
     "convert-audio": "^1.0.1",
     "date-fns": "^3.6.0",
     "jspdf": "^2.5.1",
+    "moment": "^2.30.1",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

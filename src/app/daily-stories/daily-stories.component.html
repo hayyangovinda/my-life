@@ -31,6 +31,7 @@
           matEndDate
           formControlName="end"
           placeholder="End date"
+          (dateChange)="onDateChange($event)"
         />
       </mat-date-range-input>
       <mat-datepicker-toggle

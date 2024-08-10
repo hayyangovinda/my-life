@@ -45,7 +45,7 @@ export class ChatComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
   @Input('dateParam') dateParam!: string;
   inputs: string[] = [];
-  todayDate: Date = new Date('2024-08-03');
+  todayDate: Date = new Date();
   newMessage: string = '';
   router = inject(Router);
   httpService = inject(HttpService);

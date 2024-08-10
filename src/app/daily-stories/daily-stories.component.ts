@@ -3,6 +3,7 @@ import { SharingService } from '../services/sharing.service';
 import { HttpService } from '../services/http.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import moment from 'moment';
 import {
   FormControl,
   FormGroup,
@@ -15,7 +16,7 @@ import {
 } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { startOfYear, endOfYear } from 'date-fns';
+import { startOfYear, endOfYear, format, parseISO, parse } from 'date-fns';
 import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
@@ -46,8 +47,8 @@ export class DailyStoriesComponent {
   firstDayOfYear = startOfYear(this.currentYear);
   lastDayOfYear = endOfYear(this.currentYear);
   range = new FormGroup({
-    start: new FormControl<Date | null>(this.firstDayOfYear),
-    end: new FormControl<Date | null>(this.lastDayOfYear),
+    start: new FormControl<Date | string | null>(this.firstDayOfYear),
+    end: new FormControl<Date | string | null>(this.lastDayOfYear),
   });
   showLoaders = false;
 
@@ -69,10 +70,27 @@ export class DailyStoriesComponent {
   toggleSidenav() {
     this.sharingService.toggleSidenav();
   }
+  onDateChange(event: any) {
+    this.getCorrectDateFormat();
+  }
 
   goToStory(story: any) {
     this.sharingService.updateDayToGenerate(story);
     this.sharingService.updateComingFrom('stories');
     this.router.navigateByUrl('story/' + story._id);
+  }
+  getCorrectDateFormat() {
+    const startValue = this.range.value.start;
+    const endValue = this.range.value.end;
+    if (startValue && endValue) {
+      const start =
+        moment(new Date(startValue)).format('YYYY-MM-DD') + 'T00:00:00.000Z';
+      const end =
+        moment(new Date(endValue)).format('YYYY-MM-DD') + 'T00:00:00.000Z';
+      console.log({
+        start,
+        end,
+      });
+    }
   }
 }
