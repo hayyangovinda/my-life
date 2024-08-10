@@ -18,6 +18,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { startOfYear, endOfYear, format, parseISO, parse } from 'date-fns';
 import { LoaderComponent } from '../loader/loader.component';
+import { UtilsService } from '../services/utils.service';
 
 @Component({
   selector: 'app-daily-stories',
@@ -51,10 +52,14 @@ export class DailyStoriesComponent {
     end: new FormControl<Date | string | null>(this.lastDayOfYear),
   });
   showLoaders = false;
-
+  utilsService = inject(UtilsService);
   ngOnInit(): void {
+    this.getAllChats();
+  }
+  getAllChats(params?: any) {
     this.showLoaders = true;
-    this.httpService.getAllDayChats().subscribe(
+
+    this.httpService.getAllDayChats(params).subscribe(
       (response: any) => {
         console.log(response);
         this.showLoaders = false;
@@ -71,26 +76,18 @@ export class DailyStoriesComponent {
     this.sharingService.toggleSidenav();
   }
   onDateChange(event: any) {
-    this.getCorrectDateFormat();
+    const startValue = this.range.value.start;
+    const endValue = this.range.value.end;
+    const dateParams = this.utilsService.getCorrectDateFormat(
+      startValue,
+      endValue
+    );
+    this.getAllChats(dateParams);
   }
 
   goToStory(story: any) {
     this.sharingService.updateDayToGenerate(story);
     this.sharingService.updateComingFrom('stories');
     this.router.navigateByUrl('story/' + story._id);
-  }
-  getCorrectDateFormat() {
-    const startValue = this.range.value.start;
-    const endValue = this.range.value.end;
-    if (startValue && endValue) {
-      const start =
-        moment(new Date(startValue)).format('YYYY-MM-DD') + 'T00:00:00.000Z';
-      const end =
-        moment(new Date(endValue)).format('YYYY-MM-DD') + 'T00:00:00.000Z';
-      console.log({
-        start,
-        end,
-      });
-    }
   }
 }
