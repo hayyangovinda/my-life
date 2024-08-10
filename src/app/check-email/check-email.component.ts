@@ -29,6 +29,11 @@ export class CheckEmailComponent {
       });
   }
 
+  // onResendClick() {
+  //   this.httpService.resendVerificationEmail({ email: this.userEmail });
+  //   this.toastrService.success('Email sent!');
+  // }
+
   onContinueClick() {
     this.httpService
       .checkVerificationStatus({ email: this.userEmail })

@@ -52,11 +52,10 @@ export class RegisterComponent {
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe((data: any) => {
             console.log(data);
+            this.router.navigateByUrl('check-email');
           });
 
         this.sharingService.updateUserEmail(email as string);
-
-        this.router.navigateByUrl('check-email');
       });
   }
 
