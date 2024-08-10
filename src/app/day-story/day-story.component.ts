@@ -56,6 +56,18 @@ export class DayStoryComponent implements OnInit {
         .generateStory({ prompt: this.promptToSend })
         .subscribe((response: any) => {
           this.generatedStory = response.generatedText;
+          if (
+            this.generatedStory.includes('diary') &&
+            this.generatedStory.includes('prompts') &&
+            this.generatedStory.includes('provide') &&
+            this.generatedStory.includes('entry')
+          ) {
+            this.generatedStory =
+              this.generatedStory +
+              "Add this day's story in the chat archive,then come back.";
+            return;
+          }
+
           this.httpService
             .updateDayChat(this.dayChatId, {
               story: this.generatedStory,
