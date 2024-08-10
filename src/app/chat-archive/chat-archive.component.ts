@@ -17,6 +17,7 @@ import {
 } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { LoaderComponent } from '../loader/loader.component';
+import { UtilsService } from '../services/utils.service';
 
 @Component({
   selector: 'app-chat-archive',
@@ -51,12 +52,18 @@ export class ChatArchiveComponent implements OnInit {
   sharingService = inject(SharingService);
   httpService = inject(HttpService);
   router = inject(Router);
+  utilsService = inject(UtilsService);
   chats: any = [];
   showLoaders: boolean = false;
 
   ngOnInit(): void {
+    this.getAllChats();
+  }
+
+  getAllChats(params?: any) {
     this.showLoaders = true;
-    this.httpService.getAllDayChats().subscribe(
+
+    this.httpService.getAllDayChats(params).subscribe(
       (response: any) => {
         this.chats = response;
         this.showLoaders = false;
@@ -70,6 +77,17 @@ export class ChatArchiveComponent implements OnInit {
 
   toggleSidenav() {
     this.sharingService.toggleSidenav();
+  }
+  onDateChange() {
+    const startValue = this.range.value.start;
+    const endValue = this.range.value.end;
+    if (startValue && endValue) {
+      const dateParams = this.utilsService.getCorrectDateFormat(
+        startValue,
+        endValue
+      );
+      this.getAllChats(dateParams);
+    }
   }
 
   goToChat(chat: any) {

@@ -78,11 +78,13 @@ export class DailyStoriesComponent {
   onDateChange(event: any) {
     const startValue = this.range.value.start;
     const endValue = this.range.value.end;
-    const dateParams = this.utilsService.getCorrectDateFormat(
-      startValue,
-      endValue
-    );
-    this.getAllChats(dateParams);
+    if (startValue && endValue) {
+      const dateParams = this.utilsService.getCorrectDateFormat(
+        startValue,
+        endValue
+      );
+      this.getAllChats(dateParams);
+    }
   }
 
   goToStory(story: any) {

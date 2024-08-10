@@ -24,6 +24,7 @@ import { HttpService } from '../services/http.service';
 import jsPDF from 'jspdf';
 import { PdfComponent } from '../pdf/pdf.component';
 import { LoaderComponent } from '../loader/loader.component';
+import { UtilsService } from '../services/utils.service';
 
 @Component({
   selector: 'app-ebook',
@@ -61,6 +62,7 @@ export class EbookComponent implements OnInit {
   showLoaders = false;
 
   httpService = inject(HttpService);
+  utilsService = inject(UtilsService);
   imgSrcs: string[] = [];
   storiesArray: {
     date: string;
@@ -71,30 +73,7 @@ export class EbookComponent implements OnInit {
   date!: Date | undefined;
 
   ngOnInit() {
-    this.showLoaders = true;
-    this.httpService.getAllDayChats({ sorted: true }).subscribe(
-      (chats: any) => {
-        console.log(chats);
-        this.storiesArray = chats.map((chat: any) => {
-          return { date: chat.date, story: chat.story };
-        });
-
-        chats.forEach((chat: any) => {
-          const dayImgArray: any = [];
-          chat.inputs.forEach((input: any) => {
-            if (input.type === 'sent' && input.image) {
-              dayImgArray.push(input.image);
-            }
-          });
-          this.imgsrcArray.push(dayImgArray);
-        });
-        this.showLoaders = false;
-      },
-      (error) => {
-        console.log(error);
-        this.showLoaders = false;
-      }
-    );
+    this.getAllChats();
   }
 
   toggleSidenav() {
@@ -150,6 +129,49 @@ export class EbookComponent implements OnInit {
       }, 500);
     };
     addTableCopyToPDF(0, pdf);
+  }
+
+  onDateChange(event: any) {
+    const startValue = this.range.value.start;
+    const endValue = this.range.value.end;
+    if (startValue && endValue) {
+      const dateParams: any = this.utilsService.getCorrectDateFormat(
+        startValue,
+        endValue
+      );
+      if (dateParams) {
+        dateParams.sorted = true;
+      }
+
+      this.getAllChats(dateParams);
+    }
+  }
+
+  getAllChats(params = { sorted: true }) {
+    this.showLoaders = true;
+    this.httpService.getAllDayChats(params).subscribe(
+      (chats: any) => {
+        console.log(chats);
+        this.storiesArray = chats.map((chat: any) => {
+          return { date: chat.date, story: chat.story };
+        });
+
+        chats.forEach((chat: any) => {
+          const dayImgArray: any = [];
+          chat.inputs.forEach((input: any) => {
+            if (input.type === 'sent' && input.image) {
+              dayImgArray.push(input.image);
+            }
+          });
+          this.imgsrcArray.push(dayImgArray);
+        });
+        this.showLoaders = false;
+      },
+      (error) => {
+        console.log(error);
+        this.showLoaders = false;
+      }
+    );
   }
 
   removeEmojis(input: string) {

@@ -29,6 +29,7 @@
           placeholder="Start date"
         />
         <input
+          (dateChange)="onDateChange($event)"
           readonly
           matEndDate
           formControlName="end"
