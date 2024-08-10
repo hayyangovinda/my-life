@@ -44,4 +44,8 @@ export class CheckEmailComponent {
         }
       });
   }
+
+  onBackClick() {
+    this.router.navigateByUrl('login');
+  }
 }
