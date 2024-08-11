@@ -16,11 +16,12 @@ import { SharingService } from '../services/sharing.service';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ToastrService } from 'ngx-toastr';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, LoaderComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
@@ -32,6 +33,7 @@ export class RegisterComponent {
   destroyRef = inject(DestroyRef);
   sharingService = inject(SharingService);
   router = inject(Router);
+  showLoaders = false;
 
   registerForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -48,6 +50,7 @@ export class RegisterComponent {
   }
 
   onRegisterClick() {
+    this.showLoaders = true;
     const isValidEmail = this.registerForm.controls.email.valid;
     const isValidPassword = this.registerForm.controls.password.valid;
 
@@ -58,6 +61,7 @@ export class RegisterComponent {
       if (!isValidPassword) {
         this.toastService.error('Password must be at least 6 characters');
       }
+      this.showLoaders = false;
       return;
     }
 
@@ -66,6 +70,7 @@ export class RegisterComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(
         (data: any) => {
+          this.showLoaders = false;
           localStorage.setItem('mylife-token', data.token);
 
           const email = this.registerForm.get('email')?.value;
@@ -80,6 +85,7 @@ export class RegisterComponent {
           this.sharingService.updateUserEmail(email as string);
         },
         (error: any) => {
+          this.showLoaders = false;
           console.log(error.error.message);
           this.toastService.error(error.error.message);
         }

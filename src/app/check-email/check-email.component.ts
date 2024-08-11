@@ -51,6 +51,9 @@ export class CheckEmailComponent {
   }
 
   onBackClick() {
-    this.router.navigateByUrl('login');
+    this.httpService.deleteUser().subscribe(() => {
+      this.router.navigateByUrl('login');
+      localStorage.removeItem('mylife-token');
+    });
   }
 }

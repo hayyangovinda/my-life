@@ -81,4 +81,8 @@ export class HttpService {
   createGroup(body: any) {
     return this.http.post(`${this.baseUrl}group`, body);
   }
+
+  deleteUser() {
+    return this.http.delete(`${this.baseUrl}users/active-user`);
+  }
 }

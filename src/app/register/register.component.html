@@ -87,3 +87,9 @@
 
   <button (click)="onRegisterClick()" class="login-btn">Register</button>
 </main>
+@if (showLoaders) {
+
+<div class="loader">
+  <app-loader></app-loader>
+</div>
+}
