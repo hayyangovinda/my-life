@@ -3,11 +3,12 @@ import { SharingService } from '../services/sharing.service';
 import { HttpService } from '../services/http.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-day-story',
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe, LoaderComponent],
   templateUrl: './day-story.component.html',
   styleUrls: ['../chat/chat.component.css', './day-story.component.css'],
 })
@@ -42,6 +43,7 @@ export class DayStoryComponent implements OnInit {
         this.generatedStory = dayChat.story;
         return;
       }
+      this.showLoaders = true;
 
       this.dayPrompts = this.dayPrompts
         .filter((prompt: any) => prompt.type === 'sent')
@@ -55,6 +57,7 @@ export class DayStoryComponent implements OnInit {
       this.httpService
         .generateStory({ prompt: this.promptToSend })
         .subscribe((response: any) => {
+          this.showLoaders = false;
           this.generatedStory = response.generatedText;
           if (
             this.generatedStory.includes('diary') &&
@@ -78,14 +81,22 @@ export class DayStoryComponent implements OnInit {
   }
 
   updateStory() {
+    this.showLoaders = true;
     const editedStory = document.getElementById('story-body')?.innerText;
     this.httpService
       .updateDayChat(this.dayChatId, {
         story: editedStory,
       })
-      .subscribe((response: any) => {
-        console.log(response);
-      });
+      .subscribe(
+        (response: any) => {
+          console.log(response);
+          this.showLoaders = false;
+        },
+        (error: any) => {
+          this.showLoaders = false;
+          console.log(error);
+        }
+      );
   }
 
   onBackClick() {
