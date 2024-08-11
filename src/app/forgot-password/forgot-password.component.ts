@@ -3,12 +3,18 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpService } from '../services/http.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, LoaderComponent],
   templateUrl: './forgot-password.component.html',
   styleUrls: [
     '../login/login.component.css',
@@ -21,12 +27,18 @@ export class ForgotPasswordComponent {
   destroyRef = inject(DestroyRef);
   ngxToastr = inject(ToastrService);
 
-  showLoader = false;
   forgotForm = new FormGroup({
-    email: new FormControl(''),
+    email: new FormControl('', [Validators.required, Validators.email]),
   });
+  showLoaders = false;
+
   onContinueClick() {
-    this.showLoader = true;
+    console.log(this.forgotForm.valid);
+    if (!this.forgotForm.valid) {
+      this.ngxToastr.error('Please enter a valid email', '', { timeOut: 2500 });
+      return;
+    }
+    this.showLoaders = true;
     const body = this.forgotForm.value;
     this.httpService
       .forgotPassword(body)
@@ -35,12 +47,14 @@ export class ForgotPasswordComponent {
         (data: any) => {
           console.log(data.message);
 
-          this.showLoader = false;
+          this.showLoaders = false;
           this.ngxToastr.success(data.message, '', { timeOut: 2500 });
           this.router.navigateByUrl('login');
         },
         (error) => {
-          this.showLoader = false;
+          console.log(error);
+          this.ngxToastr.error(error.error.error, '', { timeOut: 2500 });
+          this.showLoaders = false;
         }
       );
   }
