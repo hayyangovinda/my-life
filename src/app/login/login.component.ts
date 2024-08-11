@@ -15,11 +15,12 @@ import {
 import { Router } from '@angular/router';
 import { HttpService } from '../services/http.service';
 import { ToastrService } from 'ngx-toastr';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, LoaderComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -28,6 +29,7 @@ export class LoginComponent {
   private router = inject(Router);
   httpService = inject(HttpService);
   destroyRef = inject(DestroyRef);
+  showLoaders = false;
 
   loginForm = new FormGroup({
     email: new FormControl('', Validators.email),
@@ -58,16 +60,19 @@ export class LoginComponent {
       }
       return;
     }
+    this.showLoaders = true;
     this.httpService
       .login(this.loginForm.value)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(
         (data: any) => {
+          this.showLoaders = false;
           localStorage.setItem('mylife-token', data.token);
           console.log(data.token);
           this.router.navigateByUrl('home');
         },
         (error: any) => {
+          this.showLoaders = false;
           console.log(error.error.error);
           this.toastrService.error(error.error.error);
         }

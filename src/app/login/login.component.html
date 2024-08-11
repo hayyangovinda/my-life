@@ -97,3 +97,9 @@
 
   <button (click)="onLoginClick()" class="login-btn">Login</button>
 </main>
+@if (showLoaders) {
+
+<div class="loader">
+  <app-loader></app-loader>
+</div>
+}
