@@ -26,7 +26,11 @@ import { PdfComponent } from '../pdf/pdf.component';
 import { LoaderComponent } from '../loader/loader.component';
 import { UtilsService } from '../services/utils.service';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
-import { PermissionState } from '@capacitor/core';
+import { Capacitor, PermissionState } from '@capacitor/core';
+import { LocalNotifications } from '@capacitor/local-notifications';
+import { FileOpener } from '@capacitor-community/file-opener';
+import { App } from '@capacitor/app';
+import { Browser } from '@capacitor/browser';
 
 @Component({
   selector: 'app-ebook',
@@ -76,69 +80,52 @@ export class EbookComponent implements OnInit {
 
   ngOnInit() {
     this.getAllChats();
+    LocalNotifications.addListener(
+      'localNotificationActionPerformed',
+      (notification) => {
+        const filePath = notification.notification.extra.filePath;
+        console.log({ filePath });
+        this.openPdf(filePath);
+      }
+    );
+  }
+
+  async openPdf(filePath: string) {
+    if (Capacitor.getPlatform() === 'android') {
+      try {
+        console.log('Attempting to open file:', filePath);
+
+        // Get the file URI
+        const fileInfo = await Filesystem.getUri({
+          path: filePath,
+          directory: Directory.Documents,
+        });
+        console.log('File URI:', fileInfo.uri);
+
+        // Try File Opener first
+        try {
+          await FileOpener.open({
+            filePath: fileInfo.uri,
+            contentType: 'application/pdf',
+          });
+        } catch (fileOpenerError) {
+          console.error('File Opener failed:', fileOpenerError);
+
+          // Fallback to using Browser.open
+          await Browser.open({ url: fileInfo.uri });
+        }
+      } catch (error) {
+        console.error('Error opening PDF:', JSON.stringify(error, null, 2));
+        alert('Unable to open PDF. Please check the console for details.');
+      }
+    } else {
+      console.log('Opening PDF not implemented for this platform');
+    }
   }
 
   toggleSidenav() {
     this.sharingService.toggleSidenav();
   }
-
-  // onGenerateClick() {
-  //   this.showLoaders = true;
-
-  //   const pdf = new jsPDF('p', 'mm', 'a4');
-  //   const pageHeight = pdf.internal.pageSize.getHeight();
-
-  //   const x = 3;
-  //   const y = 0;
-  //   const scale = 0.19;
-  //   const storiesArray = this.storiesArray;
-  //   const pdfTemplate = this.pdf.nativeElement;
-  //   const removeEmoji = this.removeEmojis;
-  //   const imgsrcArray = this.imgsrcArray;
-
-  //   const addTableCopyToPDF = async (pageIndex: number, doc: jsPDF) => {
-  //     if (pageIndex >= storiesArray.length) {
-  //       const pdfOutput = pdf.output('datauristring');
-  //       const base64Data = pdfOutput.split(',')[1];
-  //       try {
-  //         await Filesystem.writeFile({
-  //           path: `ebook.pdf`,
-  //           data: base64Data,
-  //           directory: Directory.Documents,
-  //           encoding: Encoding.UTF8,
-  //         });
-  //         this.showLoaders = false;
-  //         alert('PDF saved successfully');
-  //       } catch (error) {
-  //         console.error('Unable to save file', error);
-  //         this.showLoaders = false;
-  //       }
-  //       return;
-  //     }
-
-  //     console.log('processing page ' + pageIndex);
-  //     this.story = removeEmoji(storiesArray[pageIndex].story);
-  //     this.imgSrcs = imgsrcArray[pageIndex];
-  //     this.date = new Date(storiesArray[pageIndex].date);
-
-  //     setTimeout(() => {
-  //       pdf.html(pdfTemplate, {
-  //         callback: (pdfInstance) => {
-  //           setTimeout(() => {
-  //             if (pageIndex < storiesArray.length - 1) {
-  //               pdfInstance.addPage('a4', 'p');
-  //             }
-  //             addTableCopyToPDF(pageIndex + 1, pdf);
-  //           }, 500);
-  //         },
-  //         x: x,
-  //         y: pageIndex * pageHeight + y,
-  //         html2canvas: { scale },
-  //       });
-  //     }, 500);
-  //   };
-  //   addTableCopyToPDF(0, pdf);
-  // }
 
   async onGenerateClick() {
     this.showLoaders = true;
@@ -162,16 +149,19 @@ export class EbookComponent implements OnInit {
         try {
           const pdfOutput = pdf.output('arraybuffer');
           const base64Data = this.arrayBufferToBase64(pdfOutput);
+          const fileName = `ebook.pdf`;
+          const filePath = `${Directory.Documents}/${fileName}`;
+          console.log(filePath);
 
           await Filesystem.writeFile({
-            path: `ebook_${new Date().getTime()}.pdf`,
+            path: filePath,
             data: base64Data,
             directory: Directory.Documents,
             recursive: true,
           });
 
           this.showLoaders = false;
-          alert('PDF saved successfully');
+          this.showNotification(fileName, filePath);
         } catch (error) {
           console.error('Unable to save file', error);
           this.showLoaders = false;
@@ -235,6 +225,24 @@ export class EbookComponent implements OnInit {
 
       this.getAllChats(dateParams);
     }
+  }
+
+  private async showNotification(fileName: string, filePath: string) {
+    console.log(filePath);
+    const notificationId = Math.floor(Math.random() * 100000); // Generate a random integer
+
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          title: 'PDF Download Complete',
+          body: `Your file ${fileName} is ready to view`,
+          id: notificationId,
+          extra: {
+            filePath: filePath,
+          },
+        },
+      ],
+    });
   }
 
   getAllChats(params = { sorted: true }) {

@@ -3,6 +3,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { Router, RouterOutlet } from '@angular/router';
 import { SharingService } from './services/sharing.service';
 import { SidenavComponent } from './sidenav/sidenav.component';
+import { Capacitor } from '@capacitor/core';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +22,7 @@ export class AppComponent implements OnInit {
   hasToken = false;
   router = inject(Router);
   ngOnInit(): void {
+    this.requestNotificationPermission();
     const token = localStorage.getItem('mylife-token');
     if (token) {
       this.hasToken = true;
@@ -42,5 +45,14 @@ export class AppComponent implements OnInit {
     this.sharingService.toogleSidenav$.subscribe((value) => {
       this.isSidenavOpen = value;
     });
+  }
+
+  async requestNotificationPermission() {
+    if (Capacitor.getPlatform() === 'android') {
+      const { display } = await LocalNotifications.checkPermissions();
+      if (display !== 'granted') {
+        await LocalNotifications.requestPermissions();
+      }
+    }
   }
 }
