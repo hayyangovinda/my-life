@@ -132,7 +132,6 @@ export class EbookComponent implements OnInit {
 
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pageHeight = pdf.internal.pageSize.getHeight();
-
     const x = 3;
     const y = 0;
     const scale = 0.19;
@@ -141,33 +140,43 @@ export class EbookComponent implements OnInit {
     const removeEmoji = this.removeEmojis;
     const imgsrcArray = this.imgsrcArray;
 
-    const addTableCopyToPDF = async (
-      pageIndex: number,
-      doc: jsPDF
-    ): Promise<void> => {
+    const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
+      let binary = '';
+      const bytes = new Uint8Array(buffer);
+      for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return window.btoa(binary);
+    };
+
+    const savePDF = async (pdf: jsPDF): Promise<void> => {
+      try {
+        const pdfOutput = pdf.output('arraybuffer');
+        const base64Data = arrayBufferToBase64(pdfOutput);
+        const randomNumber = Math.floor(Math.random() * 100000);
+        const fileName = `ebook-${randomNumber}.pdf`;
+        const filePath = `${Directory.Documents}/${fileName}`;
+        console.log(filePath);
+
+        await Filesystem.writeFile({
+          path: filePath,
+          data: base64Data,
+          directory: Directory.Documents,
+          recursive: true,
+        });
+
+        this.showNotification(fileName, filePath);
+      } catch (error) {
+        console.error('Unable to save file', error);
+        alert('Error saving PDF. Please try again.');
+      } finally {
+        this.showLoaders = false;
+      }
+    };
+
+    const addPageToPDF = async (pageIndex: number): Promise<void> => {
       if (pageIndex >= storiesArray.length) {
-        try {
-          const pdfOutput = pdf.output('arraybuffer');
-          const base64Data = this.arrayBufferToBase64(pdfOutput);
-          const randomNumber = Math.floor(Math.random() * 100000); // Generate a random integer
-          const fileName = `ebook-${randomNumber}.pdf`;
-          const filePath = `${Directory.Documents}/${fileName}`;
-          console.log(filePath);
-
-          await Filesystem.writeFile({
-            path: filePath,
-            data: base64Data,
-            directory: Directory.Documents,
-            recursive: true,
-          });
-
-          this.showLoaders = false;
-          this.showNotification(fileName, filePath);
-        } catch (error) {
-          console.error('Unable to save file', error);
-          this.showLoaders = false;
-          alert('Error saving PDF. Please try again.');
-        }
+        await savePDF(pdf);
         return;
       }
 
@@ -176,29 +185,29 @@ export class EbookComponent implements OnInit {
       this.imgSrcs = imgsrcArray[pageIndex];
       this.date = new Date(storiesArray[pageIndex].date);
 
-      await new Promise<void>((resolve) => {
-        pdf.html(pdfTemplate, {
-          callback: (pdfInstance) => {
-            if (pageIndex < storiesArray.length - 1) {
-              pdfInstance.addPage('a4', 'p');
-            }
-            resolve();
-          },
-          x: x,
-          y: pageIndex * pageHeight + y,
-          html2canvas: { scale },
-        });
-      });
-
-      await addTableCopyToPDF(pageIndex + 1, pdf);
+      return new Promise<void>((resolve) => {
+        setTimeout(() => {
+          pdf.html(pdfTemplate, {
+            callback: (pdfInstance) => {
+              if (pageIndex < storiesArray.length - 1) {
+                pdfInstance.addPage('a4', 'p');
+              }
+              resolve();
+            },
+            x: x,
+            y: pageIndex * pageHeight + y,
+            html2canvas: { scale },
+          });
+        }, 500);
+      }).then(() => addPageToPDF(pageIndex + 1));
     };
 
     try {
-      await addTableCopyToPDF(0, pdf);
+      await addPageToPDF(0);
     } catch (error) {
       console.error('Error generating PDF:', error);
-      this.showLoaders = false;
       alert('Error generating PDF. Please try again.');
+      this.showLoaders = false;
     }
   }
 
