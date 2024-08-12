@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
       this.router.navigateByUrl('home');
     } else {
       this.hasToken = false;
-      this.router.navigateByUrl('register');
+      this.router.navigateByUrl('login');
     }
     console.log('isDarkMode', this.isDarkMode);
     if (!this.selectedTheme) {

@@ -32,8 +32,8 @@ export class LoginComponent {
   showLoaders = false;
 
   loginForm = new FormGroup({
-    email: new FormControl('', Validators.email),
-    password: new FormControl('', Validators.minLength(6)),
+    email: new FormControl('my.life.test.gemini@gmail.com', Validators.email),
+    password: new FormControl('gemini123', Validators.minLength(6)),
   });
   passwordShowIcon = false;
   toastrService = inject(ToastrService);
@@ -48,6 +48,8 @@ export class LoginComponent {
   }
 
   onLoginClick() {
+    this.showLoaders = true;
+
     const isValidEmail = this.loginForm.controls.email.valid;
     const isValidPassword = this.loginForm.controls.password.valid;
 
@@ -58,9 +60,9 @@ export class LoginComponent {
       if (!isValidPassword) {
         this.toastrService.error('Password must be at least 6 characters');
       }
+      this.showLoaders = false;
       return;
     }
-    this.showLoaders = true;
     this.httpService
       .login(this.loginForm.value)
       .pipe(takeUntilDestroyed(this.destroyRef))
