@@ -149,7 +149,8 @@ export class EbookComponent implements OnInit {
         try {
           const pdfOutput = pdf.output('arraybuffer');
           const base64Data = this.arrayBufferToBase64(pdfOutput);
-          const fileName = `ebook.pdf`;
+          const randomNumber = Math.floor(Math.random() * 100000); // Generate a random integer
+          const fileName = `ebook-${randomNumber}.pdf`;
           const filePath = `${Directory.Documents}/${fileName}`;
           console.log(filePath);
 
