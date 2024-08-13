@@ -260,9 +260,12 @@ export class EbookComponent implements OnInit {
     this.httpService.getAllDayChats(params).subscribe(
       (chats: any) => {
         console.log(chats);
-        this.storiesArray = chats.map((chat: any) => {
-          return { date: chat.date, story: chat.story };
-        });
+        this.storiesArray = chats
+          .filter((chat: any) => chat.story)
+          .map((chat: any) => {
+            return { date: chat.date, story: chat.story };
+          });
+        console.log('storiesArray', this.storiesArray);
 
         chats.forEach((chat: any) => {
           const dayImgArray: any = [];
