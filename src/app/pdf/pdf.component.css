@@ -5,8 +5,8 @@ main {
   padding: 20px 100px;
   font-size: 18px;
   font-weight: 400;
-  background-color: var(--secondary-bg-color);
-  color: var(--black-text-color);
+  background-color: white;
+  color: black;
   font-family: "Raleway", sans-serif;
 }
 
